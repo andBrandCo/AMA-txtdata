@@ -1,27 +1,39 @@
-import React, { Component } from 'react';
-import { Container } from 'semantic-ui-react';
-import axios from 'axios';
-import io from 'socket.io-client';
+import React, { Component, Fragment } from "react";
+import { Container } from "semantic-ui-react";
+import axios from "axios";
+import io from "socket.io-client";
 
-import TableUser from '../TableUser/TableUser';
-import ModalUser from '../ModalUser/ModalUser';
+import TableUser from "../TableUser/TableUser";
+import ModalUser from "../ModalUser/ModalUser";
 
-import logo from '../../logo.svg';
-import shirts from '../../shirts.png';
-import './App.css';
+import "./App.css";
+import SignIn from "../pages/Login/Login";
+import { Messages } from "./testData.Messages";
+import TableMessages from "../TableMessages";
+import TextField from "@material-ui/core/TextField";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const styles = () => ({
+  textField: {
+    // marginLeft: theme.spacing(1),
+    // marginRight: theme.spacing(1),
+    width: 200
+  }
+});
 
 class App extends Component {
-
   constructor() {
     super();
 
-    this.server = process.env.REACT_APP_API_URL || '';
+    this.server = process.env.REACT_APP_API_URL || "";
     this.socket = io.connect(this.server);
 
     this.state = {
       users: [],
-      online: 0
-    }
+      messages: Messages,
+      online: 0,
+      message: ""
+    };
 
     this.fetchUsers = this.fetchUsers.bind(this);
     this.handleUserAdded = this.handleUserAdded.bind(this);
@@ -32,22 +44,35 @@ class App extends Component {
   // Place socket.io code inside here
   componentDidMount() {
     this.fetchUsers();
-    this.socket.on('visitor enters', data => this.setState({ online: data }));
-    this.socket.on('visitor exits', data => this.setState({ online: data }));
-    this.socket.on('add', data => this.handleUserAdded(data));
-    this.socket.on('update', data => this.handleUserUpdated(data));
-    this.socket.on('delete', data => this.handleUserDeleted(data));
+    // this.fetchMessages();
+    this.socket.on("visitor enters", data => this.setState({ online: data }));
+    this.socket.on("visitor exits", data => this.setState({ online: data }));
+    this.socket.on("add", data => this.handleUserAdded(data));
+    this.socket.on("update", data => this.handleUserUpdated(data));
+    this.socket.on("delete", data => this.handleUserDeleted(data));
   }
 
   // Fetch data from the back-end
   fetchUsers() {
-    axios.get(`${this.server}/api/users/`)
-    .then((response) => {
-      this.setState({ users: response.data });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    axios
+      .get(`${this.server}/api/users/`)
+      .then(response => {
+        this.setState({ users: response.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  fetchMessages() {
+    axios
+      .get(`${this.server}/api/messages/`)
+      .then(response => {
+        this.setState({ messages: response.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   handleUserAdded(user) {
@@ -72,56 +97,74 @@ class App extends Component {
 
   handleUserDeleted(user) {
     let users = this.state.users.slice();
-    users = users.filter(u => { return u._id !== user._id; });
+    users = users.filter(u => {
+      return u._id !== user._id;
+    });
     this.setState({ users: users });
   }
 
+  handleChange = event => {
+    this.setState({
+      message: event.target.value
+    });
+  };
+
   render() {
+    const { isLogged, classes } = this.props;
+    const { messages, message } = this.state;
+    console.log("messages - ", messages);
 
     let online = this.state.online;
-    let verb = (online <= 1) ? 'is' : 'are'; // linking verb, if you'd prefer
-    let noun = (online <= 1) ? 'person' : 'people';
+    let verb = online <= 1 ? "is" : "are"; // linking verb, if you'd prefer
+    let noun = online <= 1 ? "person" : "people";
 
     return (
       <div>
-        <div className='App'>
-          <div className='App-header'>
-            <img src={logo} className='App-logo' alt='logo' />
-            <h1 className='App-intro'>MERN CRUD</h1>
-            <p>A simple records system using MongoDB, Express.js, React.js, and Node.js with real-time Create, Read, Update, and Delete operations using Socket.io.</p>
-            <p>REST API was implemented on the back-end. Semantic UI React was used for the UI.</p>
-            <p>
-              <a className='social-link' href='https://github.com/cefjoeii' target='_blank' rel='noopener noreferrer'>GitHub</a> &bull; <a className='social-link' href='https://linkedin.com/in/cefjoeii' target='_blank' rel='noopener noreferrer'>LinkedIn</a> &bull; <a className='social-link' href='https://twitter.com/cefjoeii' target='_blank' rel='noopener noreferrer'>Twitter</a>
-            </p>
-            <a className='shirts' href='https://www.teepublic.com/user/codeweario' target='_blank' rel='noopener noreferrer'>
-              <img src={shirts} alt='Programmer Shirts' />
-              <span>Ad</span>
-            </a>
-          </div>
+        <div className="App">
+          {/* <div className='App-header'> */}
+          {!isLogged && <SignIn />}
+          {/* </div> */}
         </div>
-        <Container>
-          <ModalUser
-            headerTitle='Add User'
-            buttonTriggerTitle='Add New'
-            buttonSubmitTitle='Add'
-            buttonColor='green'
-            onUserAdded={this.handleUserAdded}
-            server={this.server}
-            socket={this.socket}
-          />
-          <em id='online'>{`${online} ${noun} ${verb} online.`}</em>
-          <TableUser
-            onUserUpdated={this.handleUserUpdated}
-            onUserDeleted={this.handleUserDeleted}
-            users={this.state.users}
-            server={this.server}
-            socket={this.socket}
-          />
-        </Container>
-        <br/>
+
+        {isLogged && (
+          <Fragment>
+            <TextField
+              id="standard-name"
+              label="type keyword"
+              className={classes.textField}
+              value={message}
+              onChange={this.handleChange}
+              margin="normal"
+            />
+            <div>
+              <p>List</p>
+              <TableMessages messages={messages} />
+            </div>
+            <Container>
+              <ModalUser
+                headerTitle="Add User"
+                buttonTriggerTitle="Add New"
+                buttonSubmitTitle="Add"
+                buttonColor="green"
+                onUserAdded={this.handleUserAdded}
+                server={this.server}
+                socket={this.socket}
+              />
+              <em id="online">{`${online} ${noun} ${verb} online.`}</em>
+              <TableUser
+                onUserUpdated={this.handleUserUpdated}
+                onUserDeleted={this.handleUserDeleted}
+                users={this.state.users}
+                server={this.server}
+                socket={this.socket}
+              />
+            </Container>
+          </Fragment>
+        )}
+        <br />
       </div>
     );
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
