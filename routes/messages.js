@@ -40,6 +40,9 @@ router.post("/twilio/", (req, res) => {
 router.post("/message", (...args) =>
   new MessageController().findMessagesByKeyword(...args)
 );
+router.post("/auto-response", (...args) =>
+  new MessageController().addAutoResponse(...args)
+);
 router.get("/", (...args) => new MessageController().getAllMessages(...args));
 
 module.exports = router;

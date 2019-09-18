@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,7 +13,6 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import { useStyles } from "./style";
-import { actions } from "../../../redux/actions/authActions";
 
 const SignIn = ({ login, name, token }) => {
   const classes = useStyles();
@@ -97,16 +95,4 @@ const SignIn = ({ login, name, token }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  name: state.name,
-  token: state.token
-});
-
-const mapDispatchToProps = dispatch => ({
-  login: data => dispatch(actions.setTokenSuccess(data))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignIn);
+export default SignIn;

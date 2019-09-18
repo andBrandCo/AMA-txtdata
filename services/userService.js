@@ -8,7 +8,7 @@ class UserService {
 
     if (user) {
       // const token = jwt.sign({ sub: user.id }, config.secret);
-      const token = jwt.sign({ sub: user.id }, "secret_word");
+      const token = jwt.sign({ sub: user.id }, "secret_word"); //change it for some word from config or .env
       const { password, ...userWithoutPassword } = user;
       console.log("userWithout pass - ", userWithoutPassword);
 

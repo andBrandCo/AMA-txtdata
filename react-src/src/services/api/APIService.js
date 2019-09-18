@@ -1,5 +1,6 @@
 import axios from "axios";
 import AuthStorage from "../auth";
+// import qs from 'qs';
 
 export default class APIService {
   static get AuthStorage() {
@@ -9,6 +10,11 @@ export default class APIService {
     return process.env.REACT_APP_API_URL || "";
     // return ;
   }
+
+  // static objectToQueryString(obj) {
+  //   return qs.stringify(obj);
+  // }
+
   static get defaultHeaders() {
     const headers = {
       Accept: "application/json",
@@ -23,9 +29,9 @@ export default class APIService {
   }
 
   static post(url, options = {}) {
-    return axios.post(`${url}`, options, {
+    return axios.post(`${this.server}${url}`, options, {
       headers: {
-        Authorization: `Bearer ${this.AuthStorage.getToken()}`,
+        Authorization: `Bearer ${this.AuthStorage.getToken("token")}`,
         "Content-Type": "application/json"
       }
     });
@@ -38,5 +44,19 @@ export default class APIService {
         // "Content-Type": "application/x-www-form-urlencoded"
       }
     });
+  }
+
+  static get(url, query) {
+    return axios.get(
+      `${this.server}${url}${
+        // query ? `?${this.objectToQueryString(query)}` : ""
+        query ? `` : ""
+      }`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.AuthStorage.getToken("token")}`
+        }
+      }
+    );
   }
 }

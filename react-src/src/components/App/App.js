@@ -10,16 +10,9 @@ import "./App.css";
 import SignIn from "../pages/Login/Login";
 import { Messages } from "./testData.Messages";
 import TableMessages from "../TableMessages";
-import TextField from "@material-ui/core/TextField";
-import withStyles from "@material-ui/core/styles/withStyles";
+import InputKeyword from "../InputKeyword";
 
-const styles = () => ({
-  textField: {
-    // marginLeft: theme.spacing(1),
-    // marginRight: theme.spacing(1),
-    width: 200
-  }
-});
+// import Icon from "@material-ui/core/Icon";
 
 class App extends Component {
   constructor() {
@@ -31,8 +24,7 @@ class App extends Component {
     this.state = {
       users: [],
       messages: Messages,
-      online: 0,
-      message: ""
+      online: 0
     };
 
     this.fetchUsers = this.fetchUsers.bind(this);
@@ -50,6 +42,7 @@ class App extends Component {
     this.socket.on("add", data => this.handleUserAdded(data));
     this.socket.on("update", data => this.handleUserUpdated(data));
     this.socket.on("delete", data => this.handleUserDeleted(data));
+    this.props.getAllMessageList();
   }
 
   // Fetch data from the back-end
@@ -103,16 +96,8 @@ class App extends Component {
     this.setState({ users: users });
   }
 
-  handleChange = event => {
-    this.setState({
-      message: event.target.value
-    });
-  };
-
   render() {
-    const { isLogged, classes } = this.props;
-    const { messages, message } = this.state;
-    console.log("messages - ", messages);
+    const { isLogged, messageList } = this.props;
 
     let online = this.state.online;
     let verb = online <= 1 ? "is" : "are"; // linking verb, if you'd prefer
@@ -128,17 +113,10 @@ class App extends Component {
 
         {isLogged && (
           <Fragment>
-            <TextField
-              id="standard-name"
-              label="type keyword"
-              className={classes.textField}
-              value={message}
-              onChange={this.handleChange}
-              margin="normal"
-            />
+            <InputKeyword />
             <div>
               <p>List</p>
-              <TableMessages messages={messages} />
+              <TableMessages messages={messageList} />
             </div>
             <Container>
               <ModalUser
@@ -167,4 +145,4 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+export default App;

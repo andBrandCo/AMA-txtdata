@@ -3,6 +3,8 @@ const auth = {
     if (!value || value.length <= 0) {
       return;
     }
+    console.log("set token to LS - ", value);
+
     localStorage.setItem(tokenKey, value);
     return;
   },

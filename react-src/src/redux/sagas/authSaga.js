@@ -5,11 +5,17 @@ import AuthService from "../../services/auth";
 
 function* setTokenRequest({ payload }) {
   try {
+    console.log("payload: ", payload);
     const response = yield call([AuthApiService, AuthApiService.login], {
-      email: payload.name,
+      email: payload.email,
       password: payload.password
     });
-    yield call([AuthService, AuthService.setToken], response.data.access_token);
+    console.log("response: ", response);
+    yield call(
+      [AuthService, AuthService.setToken],
+      response.data.access_token,
+      "token"
+    );
     yield put(actions.setTokenSuccess(response.data));
   } catch (err) {}
 }

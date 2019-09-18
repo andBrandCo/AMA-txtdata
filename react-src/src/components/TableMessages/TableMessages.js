@@ -1,23 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    marginLeft: "50px",
-    width: "80%",
-    marginTop: theme.spacing(3),
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 650
-  }
-}));
+import InputAutoResponse from "../InputAutoResponse";
+import { useStyles } from "./style";
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -39,24 +28,26 @@ export default function TableMessages({ messages }) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell align="right">ShortCode</TableCell>
-            <TableCell align="right">Keyword</TableCell>
+            <TableCell className={classes.tableCell}>Keyword</TableCell>
+            <TableCell>Auto Response</TableCell>
+            {/* <TableCell align="right">Keyword</TableCell>
             <TableCell align="right">MobileNumber</TableCell>
-            <TableCell align="left">AutoResponse</TableCell>
+            <TableCell align="left">AutoResponse</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
           {messages.map((row, index) => (
-            <TableRow key={index}>
+            <TableRow key={row._id}>
               <TableCell component="th" scope="row">
-                {row.Date}
+                {row.keyword}
               </TableCell>
-              <TableCell align="right">{row.ShortCode}</TableCell>
-              <TableCell align="right">{row.Keyword}</TableCell>
+              <TableCell align="left">
+                <InputAutoResponse text={row.autoResponse} id={row._id} />
+              </TableCell>
+              {/* <TableCell align="right">{row.Keyword}</TableCell> */}
               {/* <TableCell align="right">{row.URLSent}</TableCell> */}
-              <TableCell align="right">{row.MobileNumber}</TableCell>
-              <TableCell align="left">{row.AutoResponse}</TableCell>
+              {/* <TableCell align="right">{row.MobileNumber}</TableCell>
+              <TableCell align="left">{row.AutoResponse}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>

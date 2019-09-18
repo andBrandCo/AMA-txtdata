@@ -1,9 +1,12 @@
 import { types } from "../actions/authActions";
+import authService from "../../services/auth";
+
+const token = authService.getToken("token");
 
 const initialState = {
   name: "",
-  token: null,
-  isLogged: false
+  token,
+  isLogged: token ? true : false
 };
 
 export default function(state = initialState, action) {
@@ -12,6 +15,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         ...action.payload,
+        token: action.payload.access_token,
         isLogged: true
       };
     }
