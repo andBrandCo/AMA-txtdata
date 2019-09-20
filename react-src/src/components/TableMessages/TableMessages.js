@@ -7,6 +7,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import InputAutoResponse from "../InputAutoResponse";
 import { useStyles } from "./style";
+import InputURL from "../InputURL";
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -30,21 +31,23 @@ export default function TableMessages({ messages }) {
           <TableRow>
             <TableCell className={classes.tableCell}>Keyword</TableCell>
             <TableCell>Auto Response</TableCell>
-            {/* <TableCell align="right">Keyword</TableCell>
-            <TableCell align="right">MobileNumber</TableCell>
+            <TableCell>URL Sent</TableCell>
+            {/* <TableCell align="right">MobileNumber</TableCell>
             <TableCell align="left">AutoResponse</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
-          {messages.map((row, index) => (
-            <TableRow key={row._id}>
+          {messages.map(({ _id, keyword, autoResponse, URLSent }, index) => (
+            <TableRow key={_id}>
               <TableCell component="th" scope="row">
-                {row.keyword}
+                {keyword}
               </TableCell>
               <TableCell align="left">
-                <InputAutoResponse text={row.autoResponse} id={row._id} />
+                <InputAutoResponse text={autoResponse} id={_id} />
               </TableCell>
-              {/* <TableCell align="right">{row.Keyword}</TableCell> */}
+              <TableCell align="left">
+                <InputURL URLSent={URLSent} id={_id} />
+              </TableCell>
               {/* <TableCell align="right">{row.URLSent}</TableCell> */}
               {/* <TableCell align="right">{row.MobileNumber}</TableCell>
               <TableCell align="left">{row.AutoResponse}</TableCell> */}

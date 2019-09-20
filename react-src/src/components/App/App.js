@@ -7,7 +7,7 @@ import TableUser from "../TableUser/TableUser";
 import ModalUser from "../ModalUser/ModalUser";
 
 import "./App.css";
-import SignIn from "../pages/Login/Login";
+import SignIn from "../pages/Login";
 import { Messages } from "./testData.Messages";
 import TableMessages from "../TableMessages";
 import InputKeyword from "../InputKeyword";

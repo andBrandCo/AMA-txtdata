@@ -1,5 +1,5 @@
 import { all, takeEvery, put, call } from "redux-saga/effects";
-import { types, actions } from "../actions/authActions";
+import { types, setTokenSuccess } from "../actions/authActions";
 import AuthApiService from "../../services/api/AuthService";
 import AuthService from "../../services/auth";
 
@@ -16,7 +16,7 @@ function* setTokenRequest({ payload }) {
       response.data.access_token,
       "token"
     );
-    yield put(actions.setTokenSuccess(response.data));
+    yield put(setTokenSuccess(response.data));
   } catch (err) {}
 }
 

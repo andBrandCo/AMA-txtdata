@@ -1,17 +1,16 @@
-import SignIn from "./Login";
+import InputURL from "./InputURL";
 import { connect } from "react-redux";
-import { setTokenRequest } from "../../../redux/actions/authActions";
+import { actions } from "../../redux/actions/editDataActions";
 
 const mapStateToProps = state => ({
-  name: state.name,
-  token: state.token
+  keyword: state.keyword
 });
 
 const mapDispatchToProps = {
-  login: setTokenRequest
+  sendKeyword: actions.sendKeywordRequest
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignIn);
+)(InputURL);

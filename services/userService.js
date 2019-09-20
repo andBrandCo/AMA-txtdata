@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 class UserService {
   async authUser({ userName, password }) {
-    const user = await User.findOne({ name: userName, password });
+    const user = await User.findOne({ name: userName, password }).lean();
     console.log("my User - ", user);
 
     if (user) {

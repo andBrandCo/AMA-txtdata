@@ -37,6 +37,15 @@ export default class APIService {
     });
   }
 
+  static put(url, options = {}) {
+    return axios.put(`${this.server}${url}`, options, {
+      headers: {
+        Authorization: `Bearer ${this.AuthStorage.getToken("token")}`,
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
   static postAuth(url, options = {}) {
     return axios.post(`http://localhost:3000/${url}`, options, {
       headers: {

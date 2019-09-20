@@ -37,11 +37,18 @@ router.post("/twilio/", (req, res) => {
     });
 });
 
-router.post("/message", (...args) =>
-  new MessageController().findMessagesByKeyword(...args)
-);
+router.post("/message", (...args) => {
+  try {
+    new MessageController().findMessagesByKeyword(...args);
+  } catch (e) {
+    console.log("rout error", e);
+  }
+});
 router.post("/auto-response", (...args) =>
   new MessageController().addAutoResponse(...args)
+);
+router.put("/url-sent", (...args) =>
+  new MessageController().updateURLSent(...args)
 );
 router.get("/", (...args) => new MessageController().getAllMessages(...args));
 

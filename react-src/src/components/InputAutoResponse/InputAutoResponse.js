@@ -44,21 +44,23 @@ class InputAutoResponse extends Component {
   };
 
   handleResponseSave = ev => {
-    // ev.stopPropagation();
     this.props.sendAutoResponse({
       _id: this.props.id,
       autoResponse: this.state.autoResponseText
     });
   };
 
-  onFocus = e => {
-    this.setState({ focus: true });
-  };
-  onBlur = () => this.setState({ focus: false });
+  // onFocus = e => {
+  //   console.log("@@@@@@@@@@@ onFocus");
+  //   this.setState({ focus: true });
+  // };
+  // onBlur = () => {
+  //   this.setState({ focus: false });
+  // };
 
   render() {
     const { classes } = this.props;
-    const { focus, autoResponseText } = this.state;
+    const { autoResponseText, focus } = this.state;
     return (
       <div>
         <TextField
@@ -69,6 +71,8 @@ class InputAutoResponse extends Component {
           className={classes.textField}
           value={autoResponseText}
           onChange={this.handleChange("autoResponseText")}
+          // onFocus={this.onFocus}
+          // onBlur={this.onBlur}
           margin="normal"
           multiline
           rowsMax="4"

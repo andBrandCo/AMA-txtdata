@@ -10,4 +10,7 @@ export default class editDBDataService extends APIService {
   static sendAutoResponse(query) {
     return this.post("/api/messages/auto-response", query);
   }
+  static updateURLSent(query) {
+    return this.put("/api/messages/url-sent", query);
+  }
 }
