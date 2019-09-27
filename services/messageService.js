@@ -1,6 +1,6 @@
 const Message = require("../models/message");
-const fnHelper = require("../tools/fnHelper");
-const { immutableURL, mutableURL } = require("../models/const");
+const { bitlyRequest } = require("../tools/bitly");
+const { mutableURLTemplate } = require("../models/const");
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
@@ -8,46 +8,82 @@ const createNewMessage = async data => {
   const message = new Message({
     keyword: data
   });
-
-  console.log("new messageID - ", message.id);
-  // await message.save();
-
+  const { link } = await bitlyRequest(`${mutableURLTemplate}${message._id}`);
   message.URLSent = {
-    immutableURL,
-    mutableURL,
-    wholeURL: fnHelper.createURLFromParts(immutableURL, mutableURL, message.id)
+    mutableURL: mutableURLTemplate,
+    shortURL: link
   };
-
-  await message.save();
-
   console.log("new message - ", message);
+  await message.save();
   return message;
 };
-const setAutoResponse = ({ _id, autoResponse }) => {
+
+const updateRow = async ({
+  params: { id },
+  body: { autoResponseAfterURL, autoResponseBeforeURL, mutableURL, keyword }
+}) => {
+  const { URLSent } = await Message.findById(id);
+  let newShortLink = "";
+  if (URLSent.mutableURL !== mutableURL) {
+    newShortLink = await bitlyRequest(`${mutableURL}${id}`);
+  }
+
   return Message.findByIdAndUpdate(
-    _id,
-    { autoResponse },
-    { useFindAndModify: false }
+    id,
+    {
+      $set: {
+        "URLSent.mutableURL": mutableURL,
+        "URLSent.shortURL": newShortLink.link
+          ? newShortLink.link
+          : URLSent.shortURL
+      },
+      autoResponseAfterURL,
+      autoResponseBeforeURL,
+      keyword
+    },
+    { new: true }
   );
 };
 
-const updateURLSent = async ({
-  firstField,
-  secondField,
-  thirdField,
-  _id: id
+const deleteRow = ({ params: { id } }) => {
+  return Message.findByIdAndDelete(id);
+};
+
+const createRow = async ({
+  body: { keyword, autoResponseBeforeURL, autoResponseAfterURL, mutableURL }
 }) => {
-  return Message.findByIdAndUpdate(
-    id,
-    { $set: { "URLSent.mutableURL": [firstField, secondField, thirdField] } },
-    { useFindAndModify: false, new: true }
-  );
+  const message = new Message({
+    keyword,
+    autoResponseBeforeURL,
+    autoResponseAfterURL
+  });
+  const { link } = await bitlyRequest(`${mutableURL}${message._id}`);
+  message.URLSent = {
+    mutableURL,
+    shortURL: link
+  };
+  console.log("new message - ", message);
+  await message.save();
+  return message;
+
+  // const { link } = await bitlyRequest(mutable);
+
+  // return Message.create({
+  //   keyword,
+  //   autoResponseBeforeURL,
+  //   autoResponseAfterURL,
+  //   URLSent: {
+  //     mutableURL: mutable,
+  //     shortURL: link
+  //   }
+  // });
 };
 
 module.exports = {
   getAllMessageList,
   getRowByID,
   createNewMessage,
-  setAutoResponse,
-  updateURLSent
+  updateRow,
+  deleteRow,
+  createRow
 };

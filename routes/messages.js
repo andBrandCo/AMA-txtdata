@@ -44,12 +44,28 @@ router.post("/message", (...args) => {
     console.log("rout error", e);
   }
 });
-router.post("/auto-response", (...args) =>
-  new MessageController().addAutoResponse(...args)
-);
-router.put("/url-sent", (...args) =>
-  new MessageController().updateURLSent(...args)
-);
+
+router.put("/:id", (...args) => {
+  try {
+    new MessageController().updateRow(...args);
+  } catch (e) {
+    console.log("rout update message error", e);
+  }
+});
+router.delete("/:id", (...args) => {
+  try {
+    new MessageController().deleteRow(...args);
+  } catch (e) {
+    console.log("rout delete error", e);
+  }
+});
+router.post("/row", (...args) => {
+  try {
+    new MessageController().createRow(...args);
+  } catch (e) {
+    console.log("rout create error", e);
+  }
+});
 router.get("/", (...args) => new MessageController().getAllMessages(...args));
 
 module.exports = router;

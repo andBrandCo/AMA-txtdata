@@ -9,10 +9,9 @@ export default function(state = initialState, action) {
         ...action.payload
       };
     }
-    case `${types.SEND_AUTO_RESPONSE}_SUCCESS`: {
+    case `${types.UPDATE_ROW}_SUCCESS`: {
       return {
-        ...state,
-        autoResponse: action.payload.autoResponse
+        ...action.payload
       };
     }
     default:

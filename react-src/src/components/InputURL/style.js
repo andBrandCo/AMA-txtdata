@@ -1,7 +1,6 @@
 export const styles = () => ({
   textField: {
-    margin: "0 0 0 20%",
-    width: 400
+    width: "100%"
   },
   button: {
     margin: "1rem"

@@ -46,8 +46,18 @@ export default class APIService {
     });
   }
 
+  static delete(url, options = {}) {
+    return axios.delete(`${this.server}${url}`, {
+      headers: {
+        Authorization: `Bearer ${this.AuthStorage.getToken("token")}`,
+        "Content-Type": "application/json"
+      },
+      ...options
+    });
+  }
+
   static postAuth(url, options = {}) {
-    return axios.post(`http://localhost:3000/${url}`, options, {
+    return axios.post(`${this.server}${url}`, options, {
       headers: {
         "Content-Type": "application/json"
         // "Content-Type": "application/x-www-form-urlencoded"

@@ -1,4 +1,4 @@
-import { all, takeEvery, put, call } from "redux-saga/effects";
+import { takeEvery, put, call } from "redux-saga/effects";
 import { types, setTokenSuccess } from "../actions/authActions";
 import AuthApiService from "../../services/api/AuthService";
 import AuthService from "../../services/auth";
@@ -10,20 +10,19 @@ function* setTokenRequest({ payload }) {
       email: payload.email,
       password: payload.password
     });
-    console.log("response: ", response);
+    console.log("Auth response: ", response);
     yield call(
       [AuthService, AuthService.setToken],
       response.data.access_token,
       "token"
     );
     yield put(setTokenSuccess(response.data));
+    console.log("ready to push");
+
+    payload.history.push("/messages");
   } catch (err) {}
 }
 
-function* authWatcher() {
+export function* authWatcher() {
   yield takeEvery(`${types.SET_TOKEN}_REQUEST`, setTokenRequest);
-}
-
-export default function* rootSaga() {
-  yield all([authWatcher()]);
 }

@@ -1,7 +1,9 @@
 export const types = {
   SEND_KEYWORD: "SEND_KEYWORD",
-  SEND_AUTO_RESPONSE: "SEND_AUTO_RESPONSE",
-  GET_MESSAGE_LIST: "GET_MESSAGE_LIST"
+  GET_MESSAGE_LIST: "GET_MESSAGE_LIST",
+  UPDATE_ROW: "UPDATE_ROW",
+  DELETE_ROW: "DELETE_ROW",
+  CREATE_ROW: "CREATE_ROW"
 };
 
 const sendKeywordRequest = payload => {
@@ -19,19 +21,6 @@ const sendKeywordFailed = error => ({
   payload: error
 });
 
-const sendAutoResponseRequest = payload => ({
-  type: `${types.SEND_AUTO_RESPONSE}_REQUEST`,
-  payload
-});
-const sendAutoResponseSuccess = payload => ({
-  type: `${types.SEND_AUTO_RESPONSE}_SUCCESS`,
-  payload
-});
-const sendAutoResponseFailed = error => ({
-  type: `${types.SEND_AUTO_RESPONSE}_FAILED`,
-  payload: error
-});
-
 const getMessageListRequest = payload => ({
   type: `${types.GET_MESSAGE_LIST}_REQUEST`,
   payload
@@ -45,14 +34,59 @@ const getMessageListFailed = error => ({
   payload: error
 });
 
+const updateRowRequest = payload => ({
+  type: `${types.UPDATE_ROW}_REQUEST`,
+  payload
+});
+const updateRowSuccess = payload => ({
+  type: `${types.UPDATE_ROW}_SUCCESS`,
+  payload
+});
+const updateRowFailed = error => ({
+  type: `${types.UPDATE_ROW}_FAILED`,
+  payload: error
+});
+
+const deleteRowRequest = payload => ({
+  type: `${types.DELETE_ROW}_REQUEST`,
+  payload
+});
+const deleteRowSuccess = payload => ({
+  type: `${types.DELETE_ROW}_SUCCESS`,
+  payload
+});
+const deleteRowFailed = error => ({
+  type: `${types.DELETE_ROW}_FAILED`,
+  payload: error
+});
+
+const createRowRequest = payload => ({
+  type: `${types.CREATE_ROW}_REQUEST`,
+  payload
+});
+const createRowSuccess = payload => ({
+  type: `${types.CREATE_ROW}_SUCCESS`,
+  payload
+});
+const createRowFailed = error => ({
+  type: `${types.CREATE_ROW}_FAILED`,
+  payload: error
+});
+
 export const actions = {
   sendKeywordRequest,
   sendKeywordSuccess,
   sendKeywordFailed,
-  sendAutoResponseRequest,
-  sendAutoResponseSuccess,
-  sendAutoResponseFailed,
   getMessageListRequest,
   getMessageListSuccess,
-  getMessageListFailed
+  getMessageListFailed,
+  updateRowRequest,
+  updateRowSuccess,
+  updateRowFailed,
+  deleteRowRequest,
+  deleteRowSuccess,
+  deleteRowFailed,
+  createRowRequest,
+  createRowSuccess,
+  createRowFailed
 };

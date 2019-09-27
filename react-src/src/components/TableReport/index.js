@@ -1,4 +1,4 @@
-import TableMessages from "./TableMessages";
+import TableReport from "./TableReport";
 import { connect } from "react-redux";
 import { actions } from "../../redux/actions/editDataActions";
 
@@ -13,4 +13,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TableMessages);
+)(TableReport);

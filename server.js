@@ -7,12 +7,17 @@ const socket = require("socket.io");
 const jwt = require("./auth/jwt");
 const config = require("./config/db");
 const morgan = require("morgan");
+require("dotenv").config();
 
 // Use Node's default promise instead of Mongoose's promise library
 mongoose.Promise = global.Promise;
 
 // Connect to the database
-mongoose.connect(config.db, { useNewUrlParser: true });
+mongoose.connect(config.db, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+});
 let db = mongoose.connection;
 
 db.on("open", () => {

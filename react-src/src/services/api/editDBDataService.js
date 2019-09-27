@@ -7,10 +7,14 @@ export default class editDBDataService extends APIService {
   static getMessageList() {
     return this.get("/api/messages/");
   }
-  static sendAutoResponse(query) {
-    return this.post("/api/messages/auto-response", query);
+
+  static updateRow(query) {
+    return this.put(`/api/messages/${query.id}`, query);
   }
-  static updateURLSent(query) {
-    return this.put("/api/messages/url-sent", query);
+  static deleteRow(query) {
+    return this.delete(`/api/messages/${query.id}`);
+  }
+  static createRow(query) {
+    return this.post(`/api/messages/row`, query);
   }
 }

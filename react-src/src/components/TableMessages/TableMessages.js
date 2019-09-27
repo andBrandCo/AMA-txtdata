@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import InputAutoResponse from "../InputAutoResponse";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+
 import { useStyles } from "./style";
-import InputURL from "../InputURL";
+import TableBodyRow from "../TableBodyRow";
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -21,40 +24,86 @@ import InputURL from "../InputURL";
 //   createData('Gingerbread', 356, 16.0, 49, 3.9),
 // ];
 
-export default function TableMessages({ messages }) {
+export default function TableMessages({ messages, deleteRow }) {
   const classes = useStyles();
 
+  const [selectedID, setSelectedID] = useState("");
+  const [newLocalRow, setNewLocalRow] = useState(false);
+
+  const mutableURL = messages.length > 0 ? messages[0].URLSent.mutableURL : "";
+
+  const add = () => setNewLocalRow(true);
+  const removeRow = () => {
+    deleteRow({ id: selectedID });
+    setSelectedID("");
+  };
+  const removeLocalRow = () => {
+    setNewLocalRow(false);
+  };
+
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.tableCell}>Keyword</TableCell>
-            <TableCell>Auto Response</TableCell>
-            <TableCell>URL Sent</TableCell>
-            {/* <TableCell align="right">MobileNumber</TableCell>
+    <div style={{ position: "relative" }}>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.fab}
+        size="medium"
+        // onClick={selectedID ? removeRow : add}
+        onClick={selectedID ? removeRow : newLocalRow ? removeLocalRow : add}
+      >
+        {selectedID || newLocalRow ? <RemoveIcon /> : <AddIcon />}
+      </Fab>
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableCell} align="center">
+                Keyword
+              </TableCell>
+              <TableCell align="center">Text before URL</TableCell>
+              <TableCell align="center">URL Sent</TableCell>
+              <TableCell align="center">Text after URL</TableCell>
+              <TableCell align="center"></TableCell>
+              {/* <TableCell align="right">MobileNumber</TableCell>
             <TableCell align="left">AutoResponse</TableCell> */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {messages.map(({ _id, keyword, autoResponse, URLSent }, index) => (
-            <TableRow key={_id}>
-              <TableCell component="th" scope="row">
-                {keyword}
-              </TableCell>
-              <TableCell align="left">
-                <InputAutoResponse text={autoResponse} id={_id} />
-              </TableCell>
-              <TableCell align="left">
-                <InputURL URLSent={URLSent} id={_id} />
-              </TableCell>
-              {/* <TableCell align="right">{row.URLSent}</TableCell> */}
-              {/* <TableCell align="right">{row.MobileNumber}</TableCell>
-              <TableCell align="left">{row.AutoResponse}</TableCell> */}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+          </TableHead>
+          <TableBody>
+            {messages.map(
+              ({
+                id,
+                keyword,
+                autoResponseBeforeURL,
+                autoResponseAfterURL,
+                URLSent: { mutableURL }
+              }) => (
+                <TableBodyRow
+                  key={id}
+                  id={id}
+                  keyword={keyword}
+                  textBeforeURL={autoResponseBeforeURL}
+                  textAfterURL={autoResponseAfterURL}
+                  URL={mutableURL}
+                  editable={selectedID === id}
+                  onClickFn={setSelectedID}
+                />
+              )
+            )}
+            {newLocalRow && (
+              <TableBodyRow
+                id="LocalRow"
+                keyword={""}
+                textBeforeURL={""}
+                textAfterURL={""}
+                URL={mutableURL}
+                editable
+                newRow
+                onClickFn={setNewLocalRow}
+              />
+            )}
+          </TableBody>
+        </Table>
+      </Paper>
+    </div>
   );
 }

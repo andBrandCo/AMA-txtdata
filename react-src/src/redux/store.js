@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { logger } from "redux-logger";
-import rootSaga from "./sagas/authSaga";
+import { authWatcher } from "./sagas/authSaga";
 import { keywordWatcherSaga } from "./sagas/keywordSaga";
 import reducer from "./reducers";
 
@@ -16,7 +16,7 @@ const store = createStore(
     reduxDevtools
   )
 );
-sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(authWatcher);
 sagaMiddleware.run(keywordWatcherSaga);
 
 export default store;

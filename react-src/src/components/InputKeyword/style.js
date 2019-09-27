@@ -4,6 +4,7 @@ export const styles = () => ({
     width: 400
   },
   button: {
-    margin: "1rem"
+    margin: "1rem",
+    backgroundColor: "#3e1c68"
   }
 });

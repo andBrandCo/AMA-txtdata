@@ -18,19 +18,16 @@ const MessageSchema = new mongoose.Schema({
     // unique: true
   },
   URLSent: {
-    immutableURL: [String],
-    mutableURL: [String],
-    wholeURL: {
-      type: String
-    }
+    mutableURL: String,
+    shortURL: String
   },
-  // URLSent: {
-  //   type: String
-  // },
   mobileNumber: {
     type: Number
   },
-  autoResponse: {
+  autoResponseBeforeURL: {
+    type: String
+  },
+  autoResponseAfterURL: {
     type: String
   }
 });
@@ -38,6 +35,9 @@ const MessageSchema = new mongoose.Schema({
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-// MessageSchema.set("toJSON", { virtuals: true });
+MessageSchema.set("toJSON", { virtuals: true });
+MessageSchema.virtual("URLSent.wholeURL").get(function() {
+  return `${this.URLSent.mutableURL}${this._id}`;
+});
 
 const Message = (module.exports = mongoose.model("message", MessageSchema));

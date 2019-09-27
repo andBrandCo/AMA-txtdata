@@ -14,17 +14,20 @@ import Container from "@material-ui/core/Container";
 
 import { useStyles } from "./style";
 
-const SignIn = ({ login, name, token }) => {
+const SignIn = ({ login, name, token, history }) => {
   const classes = useStyles();
   const [userName, setName] = useState("");
   const [userPassword, setPassword] = useState("");
 
   const submitLogin = ev => {
     ev.preventDefault();
-    console.log(name, token);
+    console.log("name, token - ", name, token);
+    console.log("email, pass - ", userName, userPassword);
+
     login({
       email: userName,
-      password: userPassword
+      password: userPassword,
+      history
     });
   };
 

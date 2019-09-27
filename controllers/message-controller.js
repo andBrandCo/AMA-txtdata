@@ -34,14 +34,30 @@ class MessageController {
     }
   }
 
-  async addAutoResponse(req, res) {
-    await messageService.setAutoResponse(req.body);
-    const updatedElement = await messageService.getRowByID(req.body._id);
-    res.status(200).send(updatedElement);
-  }
   async updateURLSent(req, res) {
     const elem = await messageService.updateURLSent(req.body);
     console.log("URlupdated - ", elem);
+
+    res.status(200).send(elem);
+  }
+
+  async updateRow(req, res) {
+    const elem = await messageService.updateRow(req);
+    console.log("ROW updated - ", elem);
+
+    res.status(200).send(elem);
+  }
+
+  async deleteRow(req, res) {
+    const elem = await messageService.deleteRow(req);
+    console.log("ROW deleted - ", elem);
+
+    res.status(200).send(elem);
+  }
+
+  async createRow(req, res) {
+    const elem = await messageService.createRow(req);
+    console.log("ROW created - ", elem);
 
     res.status(200).send(elem);
   }

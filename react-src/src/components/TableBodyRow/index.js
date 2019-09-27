@@ -1,16 +1,17 @@
-import TableMessages from "./TableMessages";
+import TableBodyRow from "./TableBodyRow";
 import { connect } from "react-redux";
 import { actions } from "../../redux/actions/editDataActions";
 
 const mapStateToProps = state => ({
-  messages: state.messageList
+  messageList: state.messageList
 });
 
 const mapDispatchToProps = {
-  deleteRow: actions.deleteRowRequest
+  updateRow: actions.updateRowRequest,
+  createRow: actions.createRowRequest
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TableMessages);
+)(TableBodyRow);

@@ -1,18 +1,16 @@
 import React, { Component, Fragment } from "react";
-import { Container } from "semantic-ui-react";
+// import { Container } from "semantic-ui-react";
+// import TableUser from "../TableUser/TableUser";
+// import ModalUser from "../ModalUser/ModalUser";
 import axios from "axios";
 import io from "socket.io-client";
-
-import TableUser from "../TableUser/TableUser";
-import ModalUser from "../ModalUser/ModalUser";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 import "./App.css";
 import SignIn from "../pages/Login";
-import { Messages } from "./testData.Messages";
-import TableMessages from "../TableMessages";
-import InputKeyword from "../InputKeyword";
-
-// import Icon from "@material-ui/core/Icon";
+import MainContainer from "../pages/MainContainer/MainContainer";
+import history from "../../services/history";
+import PrivateRoute from "../PrivateRoute";
 
 class App extends Component {
   constructor() {
@@ -23,7 +21,6 @@ class App extends Component {
 
     this.state = {
       users: [],
-      messages: Messages,
       online: 0
     };
 
@@ -97,50 +94,52 @@ class App extends Component {
   }
 
   render() {
-    const { isLogged, messageList } = this.props;
+    const { isLogged } = this.props;
 
     let online = this.state.online;
     let verb = online <= 1 ? "is" : "are"; // linking verb, if you'd prefer
     let noun = online <= 1 ? "person" : "people";
 
-    return (
-      <div>
-        <div className="App">
-          {/* <div className='App-header'> */}
-          {!isLogged && <SignIn />}
-          {/* </div> */}
-        </div>
+    // return (
+    //   <div>
+    //     <div className="App">
+    //       {!isLogged && <SignIn />}
+    //     </div>
 
-        {isLogged && (
-          <Fragment>
-            <InputKeyword />
-            <div>
-              <p>List</p>
-              <TableMessages messages={messageList} />
-            </div>
-            <Container>
-              <ModalUser
-                headerTitle="Add User"
-                buttonTriggerTitle="Add New"
-                buttonSubmitTitle="Add"
-                buttonColor="green"
-                onUserAdded={this.handleUserAdded}
-                server={this.server}
-                socket={this.socket}
-              />
-              <em id="online">{`${online} ${noun} ${verb} online.`}</em>
-              <TableUser
-                onUserUpdated={this.handleUserUpdated}
-                onUserDeleted={this.handleUserDeleted}
-                users={this.state.users}
-                server={this.server}
-                socket={this.socket}
-              />
-            </Container>
-          </Fragment>
-        )}
-        <br />
-      </div>
+    //     {isLogged && (
+    //       <Fragment>
+    //         <MainContainer />
+    //         {/* <Container>
+    //           <ModalUser
+    //             headerTitle="Add User"
+    //             buttonTriggerTitle="Add New"
+    //             buttonSubmitTitle="Add"
+    //             buttonColor="green"
+    //             onUserAdded={this.handleUserAdded}
+    //             server={this.server}
+    //             socket={this.socket}
+    //           />
+    //           <em id="online">{`${online} ${noun} ${verb} online.`}</em>
+    //           <TableUser
+    //             onUserUpdated={this.handleUserUpdated}
+    //             onUserDeleted={this.handleUserDeleted}
+    //             users={this.state.users}
+    //             server={this.server}
+    //             socket={this.socket}
+    //           />
+    //         </Container> */}
+    //       </Fragment>
+    //     )}
+    //   </div>
+    // );
+    return (
+      <Router history={history}>
+        <Switch>
+          <Route path="/login" component={SignIn} />
+          <PrivateRoute path="/messages" component={MainContainer} />
+          {/* <Route path="/keywords" component={MainContainer} /> */}
+        </Switch>
+      </Router>
     );
   }
 }

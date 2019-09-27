@@ -1,98 +1,28 @@
 import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-// import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./style";
 
-class InputAutoResponse extends Component {
-  inputRef = null;
-
-  state = {
-    autoResponseText: this.props.text,
-    focus: false
-  };
-
-  handleClick = event => {
-    if (event.target === this.inputRef) {
-      this.setState({ focus: true });
-    } else {
-      this.setState({ focus: false });
-    }
-  };
-
-  componentDidMount() {
-    window.addEventListener("click", this.handleClick);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("click", this.handleClick);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.keyword !== prevProps.keyword) {
-      this.setState({
-        message: ""
-      });
-    }
-  }
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
-  handleResponseSave = ev => {
-    this.props.sendAutoResponse({
-      _id: this.props.id,
-      autoResponse: this.state.autoResponseText
-    });
-  };
-
-  // onFocus = e => {
-  //   console.log("@@@@@@@@@@@ onFocus");
-  //   this.setState({ focus: true });
-  // };
-  // onBlur = () => {
-  //   this.setState({ focus: false });
-  // };
-
+class InputAutoResponseEnd extends Component {
   render() {
-    const { classes } = this.props;
-    const { autoResponseText, focus } = this.state;
+    const { classes, handleChange, text, id, placeholder } = this.props;
     return (
-      <div>
-        <TextField
-          id="standard-name"
-          label="type new auto Response"
-          // disableUnderline
-          InputProps={{ disableUnderline: true }}
-          className={classes.textField}
-          value={autoResponseText}
-          onChange={this.handleChange("autoResponseText")}
-          // onFocus={this.onFocus}
-          // onBlur={this.onBlur}
-          margin="normal"
-          multiline
-          rowsMax="4"
-          inputRef={node => {
-            this.inputRef = node;
-          }}
-        />
-        {focus && (
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.handleResponseSave}
-          >
-            Save
-          </Button>
-        )}
-      </div>
+      <TextField
+        id={id}
+        // label="end auto Response"
+        // disableUnderline
+        // InputProps={{ disableUnderline: true }}
+        className={classes.textField}
+        value={text || ""}
+        onChange={handleChange}
+        placeholder={placeholder}
+        margin="dense"
+        multiline
+        rowsMax="4"
+        variant="outlined"
+      />
     );
   }
 }
 
-export default withStyles(styles)(InputAutoResponse);
+export default withStyles(styles)(InputAutoResponseEnd);
