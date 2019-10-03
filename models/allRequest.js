@@ -3,32 +3,24 @@ const mongoose = require("mongoose");
 // const validate = require("mongoose-validator");
 
 // Define the database model
-const MessageSchema = new mongoose.Schema(
+const AllRequestSchema = new mongoose.Schema(
   {
-    date: {
-      type: Date
+    phoneID: {
+      type: String
     },
     shortCode: {
-      type: Number
+      type: String
     },
     keyword: {
       type: String
     },
-    phoneID: {
-      type: String
-      // unique: true
-    },
-    URLSent: {
-      mutableURL: String
-      // shortURL: String
-    },
     mobileNumber: {
       type: String
     },
-    autoResponseBeforeURL: {
+    urlSent: {
       type: String
     },
-    autoResponseAfterURL: {
+    autoResponse: {
       type: String
     }
   },
@@ -41,9 +33,9 @@ const MessageSchema = new mongoose.Schema(
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-MessageSchema.set("toJSON", { virtuals: true });
-MessageSchema.virtual("URLSent.wholeURL").get(function() {
-  return `${this.URLSent.mutableURL}${this._id}`;
-});
+AllRequestSchema.set("toJSON", { virtuals: true });
 
-const Message = (module.exports = mongoose.model("message", MessageSchema));
+const allRequest = (module.exports = mongoose.model(
+  "allRequest",
+  AllRequestSchema
+));

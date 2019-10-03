@@ -56,13 +56,19 @@ const genderValidator = [
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String
+    },
+    password: {
+      type: String
+    }
   },
-  password: {
-    type: String
+  {
+    timestamps: true,
+    versionKey: false
   }
-});
+);
 
 const User = (module.exports = mongoose.model("user", UserSchema));

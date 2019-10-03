@@ -1,13 +1,14 @@
 import TableReport from "./TableReport";
 import { connect } from "react-redux";
-import { actions } from "../../redux/actions/editDataActions";
+import { actions } from "../../redux/actions/recordsActions";
 
 const mapStateToProps = state => ({
-  messages: state.messageList
+  records: state.recordList
 });
 
 const mapDispatchToProps = {
-  deleteRow: actions.deleteRowRequest
+  getRecords: actions.getAllRecordRequest,
+  sendReport: actions.sendReportRequest
 };
 
 export default connect(

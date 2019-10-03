@@ -10,14 +10,10 @@ export const useStyles = makeStyles(theme => ({
   table: {
     minWidth: 650
   },
-  tableCell: {
-    width: "200px"
-  },
-  fab: {
-    margin: theme.spacing(1),
-    position: "absolute",
-    marginLeft: "25px",
-    marginTop: "-25px",
-    backgroundColor: "#3e1c68"
+  margin: {
+    margin: theme.spacing(1)
   }
+  // tableCell: {
+  //   width: "200px"
+  // }
 }));

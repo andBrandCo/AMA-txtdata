@@ -3,6 +3,8 @@ import createSagaMiddleware from "redux-saga";
 import { logger } from "redux-logger";
 import { authWatcher } from "./sagas/authSaga";
 import { keywordWatcherSaga } from "./sagas/keywordSaga";
+import { recordWatcher } from "./sagas/recordSaga";
+// import { wsMiddleware } from "../services/socket/wsMiddleware";
 import reducer from "./reducers";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -18,5 +20,6 @@ const store = createStore(
 );
 sagaMiddleware.run(authWatcher);
 sagaMiddleware.run(keywordWatcherSaga);
+sagaMiddleware.run(recordWatcher);
 
 export default store;
