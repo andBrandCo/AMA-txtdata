@@ -1,41 +1,58 @@
 const Message = require("../models/message");
 const { bitlyRequest } = require("../tools/bitly");
 const { mutableURLTemplate } = require("../models/const");
+const { testSendRequestToTwilio } = require("../tools/twilio_send_sms");
+const recordService = require("./recordService");
+const phoneNumberService = require("./phoneNumberService");
+
+const RecordService = new recordService();
+const PhoneNumberService = new phoneNumberService();
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
-const createNewMessage = async data => {
-  const message = new Message({
-    keyword: data
+const findByKeyword = async (keyword, mobileNumber) => {
+  const row = await Message.findOne({ keyword });
+  const phoneData = await PhoneNumberService.findPhoneOrCreate({
+    mobileNumber
   });
-  const { link } = await bitlyRequest(`${mutableURLTemplate}${message._id}`);
-  message.URLSent = {
-    mutableURL: mutableURLTemplate,
-    shortURL: link
-  };
-  console.log("new message - ", message);
-  await message.save();
-  return message;
+  console.log("PHHHHHOOOONE data come back - ", phoneData);
+
+  console.log("row in service - ", row);
+  if (row) {
+    const {
+      data: { link }
+    } = await bitlyRequest(`${row.URLSent.mutableURL}${phoneData._id}`);
+    console.log("SHORT link - ", link);
+    const autoResponse = `${row.autoResponseBeforeURL} [ ${link} ] ${row.autoResponseAfterURL}`;
+    console.log("autoRESp - ", autoResponse);
+
+    testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
+    return RecordService.addRow({
+      mobileNumber,
+      phoneID: phoneData._id,
+      autoResponse,
+      urlSent: row.URLSent.wholeURL,
+      keyword
+    });
+  }
+  console.log("this keyword Dosnt exist!!");
+
+  return RecordService.addRow({
+    keyword,
+    mobileNumber,
+    phoneID: phoneData._id
+  });
 };
 
 const updateRow = async ({
   params: { id },
   body: { autoResponseAfterURL, autoResponseBeforeURL, mutableURL, keyword }
 }) => {
-  const { URLSent } = await Message.findById(id);
-  let newShortLink = "";
-  if (URLSent.mutableURL !== mutableURL) {
-    newShortLink = await bitlyRequest(`${mutableURL}${id}`);
-  }
-
   return Message.findByIdAndUpdate(
     id,
     {
       $set: {
-        "URLSent.mutableURL": mutableURL,
-        "URLSent.shortURL": newShortLink.link
-          ? newShortLink.link
-          : URLSent.shortURL
+        "URLSent.mutableURL": mutableURL
       },
       autoResponseAfterURL,
       autoResponseBeforeURL,
@@ -52,37 +69,26 @@ const deleteRow = ({ params: { id } }) => {
 const createRow = async ({
   body: { keyword, autoResponseBeforeURL, autoResponseAfterURL, mutableURL }
 }) => {
+  console.log("mutableData - ", mutableURL);
+  const url = mutableURL ? mutableURL : mutableURLTemplate;
+  console.log("url for save - ", url);
+
   const message = new Message({
     keyword,
     autoResponseBeforeURL,
-    autoResponseAfterURL
+    autoResponseAfterURL,
+    URLSent: {
+      mutableURL: url
+    }
   });
-  const { link } = await bitlyRequest(`${mutableURL}${message._id}`);
-  message.URLSent = {
-    mutableURL,
-    shortURL: link
-  };
-  console.log("new message - ", message);
   await message.save();
   return message;
-
-  // const { link } = await bitlyRequest(mutable);
-
-  // return Message.create({
-  //   keyword,
-  //   autoResponseBeforeURL,
-  //   autoResponseAfterURL,
-  //   URLSent: {
-  //     mutableURL: mutable,
-  //     shortURL: link
-  //   }
-  // });
 };
 
 module.exports = {
   getAllMessageList,
   getRowByID,
-  createNewMessage,
+  findByKeyword,
   updateRow,
   deleteRow,
   createRow

@@ -3,25 +3,19 @@ const messageService = require("../services/messageService");
 class MessageController {
   async getAllMessages(req, res) {
     const messageList = await messageService.getAllMessageList();
+
     messageList
       ? res.json(messageList)
       : res.status(500).json({ success: false, msg: `Something went wrong. ` });
   }
 
   async findMessagesByKeyword(req, res) {
-    const { keyword } = req.body;
-    const list = await messageService.getAllMessageList();
-    const listWithKeyword = list.filter(elem => {
-      if (elem.keyword === undefined) {
-        return false;
-      }
-      return keyword.indexOf(elem.keyword.toLowerCase()) !== -1;
-    });
-    console.log("arr - ", listWithKeyword);
-    if (listWithKeyword.length === 0) {
-      return res.status(200).send(await this.createNewMessage(req, res));
-    }
-    res.status(200).send(listWithKeyword[0]);
+    let { keyword, mobileNumber } = req.body;
+    // keyword = keyword.toUpperCase();
+    console.log("req.body in find Message - ", req.body);
+
+    const row = await messageService.findByKeyword(keyword, mobileNumber);
+    row ? res.status(200).send(row) : res.status(404).send("Not found");
   }
 
   async createNewMessage(req, res) {

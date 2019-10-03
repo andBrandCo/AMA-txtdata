@@ -7,8 +7,8 @@ import TableReport from "../../TableReport";
 
 const MainContainer = ({ getAllMessageList }) => {
   useEffect(() => {
-    // getAllMessageList();
-  });
+    getAllMessageList();
+  }, []);
   return (
     <div style={{ backgroundColor: "#E5E5E5", height: "100vh" }}>
       <AppHeader />
