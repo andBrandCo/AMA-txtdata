@@ -1,5 +1,5 @@
 const express = require("express");
-const path = require("path");
+// const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -54,6 +54,7 @@ if (process.env.CORS) {
 app.use(jwt());
 app.use("/api/users", require("./routes/users"));
 app.use("/api/messages", require("./routes/messages"));
+app.use("/api/records", require("./routes/records"));
 
 // Use express's default error handling middleware
 app.use((err, req, res, next) => {
@@ -76,11 +77,11 @@ io.on("connection", socket => {
   online++;
   console.log(`Socket ${socket.id} connected.`);
   console.log(`Online: ${online}`);
-  io.emit("visitor enters", online);
+  // io.emit("visitor enters", online);
 
-  socket.on("add", data => socket.broadcast.emit("add", data));
-  socket.on("update", data => socket.broadcast.emit("update", data));
-  socket.on("delete", data => socket.broadcast.emit("delete", data));
+  // socket.on("add", data => socket.broadcast.emit("add", data));
+  // socket.on("update", data => socket.broadcast.emit("update", data));
+  // socket.on("delete", data => socket.broadcast.emit("delete", data));
 
   socket.on("disconnect", () => {
     online--;
