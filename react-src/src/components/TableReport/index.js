@@ -8,7 +8,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getRecords: actions.getAllRecordRequest,
-  sendReport: actions.sendReportRequest
+  sendReport: actions.sendReportRequest,
+  downloadRecordsCSV: actions.getAllRecordCSVRequest
 };
 
 export default connect(

@@ -22,13 +22,7 @@ const postLimiter = new RateLimit({
 });
 
 router.post("/login", (...args) => new userController().authenticate(...args));
-router.post("/create", (req, res) => {
-  User.create({ name: req.body.userName, password: req.body.password })
-    .then(() => {
-      res.status(200).send("Ok");
-    })
-    .catch(console.error);
-});
+router.post("/register", (...args) => new userController().createUser(...args));
 
 // READ (ONE)
 router.get("/:id", (req, res) => {

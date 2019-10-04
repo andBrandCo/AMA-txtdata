@@ -7,14 +7,18 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import { saveAs } from "file-saver";
 
 import { useStyles } from "./style";
 import { getFormattedDate } from "../../utils";
 import { TableFooter } from "@material-ui/core";
-import RecordService from "../../services/api/RecordService";
+// import RecordService from "../../services/api/RecordService";
 
-export default function TableReport({ getRecords, sendReport, records }) {
+export default function TableReport({
+  getRecords,
+  sendReport,
+  records,
+  downloadRecordsCSV
+}) {
   useEffect(() => {
     getRecords();
   }, []);
@@ -22,11 +26,7 @@ export default function TableReport({ getRecords, sendReport, records }) {
   const classes = useStyles();
   const refreshRecordsClick = () => getRecords();
   const makeFile = async () => {
-    const fileName = "AllRecords.csv";
-    const { data } = await RecordService.getAllRecordCSVList();
-    const csvData = new Blob([data], { type: "text/csv;charset=utf-8;" });
-
-    saveAs(csvData, fileName);
+    downloadRecordsCSV();
   };
   const sendReportHandler = () => sendReport();
 
