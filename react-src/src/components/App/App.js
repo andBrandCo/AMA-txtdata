@@ -5,7 +5,7 @@ import React, { Component } from "react";
 
 // import axios from "axios";
 // import io from "socket.io-client";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 import "./App.css";
 import SignIn from "../pages/Login";
@@ -137,6 +137,17 @@ class App extends Component {
     return (
       <Router history={history}>
         <Switch>
+          <Route
+            exact
+            path="/"
+            render={() =>
+              isLogged ? (
+                <Redirect to="/messages/keywords" />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
           <Route path="/login" component={SignIn} />
           <PrivateRoute path="/messages" component={MainContainer} />
         </Switch>

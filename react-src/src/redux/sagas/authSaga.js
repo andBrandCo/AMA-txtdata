@@ -19,7 +19,7 @@ function* setTokenRequest({ payload }) {
     yield put(setTokenSuccess(response.data));
     console.log("ready to push");
 
-    payload.history.push("/messages");
+    payload.history.push("/messages/keywords");
   } catch (err) {}
 }
 

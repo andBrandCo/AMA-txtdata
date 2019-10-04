@@ -58,11 +58,14 @@ const genderValidator = [
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
-      type: String
+    username: {
+      type: String,
+      unique: true,
+      required: [true, "Name is required."]
     },
-    password: {
-      type: String
+    hash: {
+      type: String,
+      required: true
     }
   },
   {
@@ -71,4 +74,5 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+UserSchema.set("toJSON", { virtuals: true });
 const User = (module.exports = mongoose.model("user", UserSchema));

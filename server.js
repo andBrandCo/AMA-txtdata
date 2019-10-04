@@ -8,6 +8,8 @@ const jwt = require("./auth/jwt");
 const config = require("./config/db");
 const morgan = require("morgan");
 require("dotenv").config();
+const errorHandler = require("./services/error-handler");
+const { authMiddleware } = require("./middleware/authMiddleware");
 
 // Use Node's default promise instead of Mongoose's promise library
 mongoose.Promise = global.Promise;
@@ -16,7 +18,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.db, {
   useNewUrlParser: true,
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 let db = mongoose.connection;
 
@@ -51,16 +54,19 @@ if (process.env.CORS) {
 
 // Initialize routes middleware
 // Uncomment this after user creation
-app.use(jwt());
+// app.use(jwt());
 app.use("/api/users", require("./routes/users"));
-app.use("/api/messages", require("./routes/messages"));
-app.use("/api/records", require("./routes/records"));
+app.use("/api/messages", authMiddleware, require("./routes/messages"));
+app.use("/api/records", authMiddleware, require("./routes/records"));
+
+// global error handler
+app.use(errorHandler);
 
 // Use express's default error handling middleware
-app.use((err, req, res, next) => {
-  if (res.headersSent) return next(err);
-  res.status(400).json({ err: err });
-});
+// app.use((err, req, res, next) => {
+//   if (res.headersSent) return next(err);
+//   res.status(400).json({ err: err });
+// });
 
 // Start the server
 const port = process.env.PORT || 3000;
