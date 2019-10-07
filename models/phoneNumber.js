@@ -6,7 +6,9 @@ const mongoose = require("mongoose");
 const PhoneNumberSchema = new mongoose.Schema(
   {
     mobileNumber: {
-      type: String
+      type: String,
+      unique: true,
+      required: [true, "User phone number required."]
     }
   },
   {

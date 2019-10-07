@@ -1,10 +1,18 @@
 function errorHandler(err, req, res, next) {
+  console.log("error Handler worked!");
+  console.log("error name - ", err.name);
+
   if (typeof err === "string") {
     // custom application error
     return res.status(400).json({ message: err });
   }
 
   if (err.name === "ValidationError") {
+    // mongoose validation error
+    return res.status(400).json({ message: err.message });
+  }
+
+  if (err.name === "ValidatorError") {
     // mongoose validation error
     return res.status(400).json({ message: err.message });
   }

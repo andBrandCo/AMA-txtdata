@@ -1,17 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Switch } from "react-router-dom";
 import AppHeader from "../../AppHeader";
 import PrivateRoute from "../../PrivateRoute";
 import KeywordsWrapper from "../KeywordsWrapper";
 import TableReport from "../../TableReport";
 
-const MainContainer = ({ getAllMessageList }) => {
-  useEffect(() => {
-    getAllMessageList();
-  }, []);
+const MainContainer = ({ logout }) => {
   return (
     <div style={{ backgroundColor: "#E5E5E5", height: "100vh" }}>
-      <AppHeader />
+      <AppHeader logout={logout} />
       <Switch>
         <PrivateRoute path="/messages/keywords" component={KeywordsWrapper} />
         <PrivateRoute path="/messages/report" component={TableReport} />

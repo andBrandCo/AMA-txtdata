@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const socket = require("socket.io");
-const jwt = require("./auth/jwt");
+// const jwt = require("./auth/jwt");
 const config = require("./config/db");
 const morgan = require("morgan");
 require("dotenv").config();
