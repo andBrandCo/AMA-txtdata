@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -24,11 +24,19 @@ import TableBodyRow from "../TableBodyRow";
 //   createData('Gingerbread', 356, 16.0, 49, 3.9),
 // ];
 
-export default function TableMessages({ messages, deleteRow }) {
+export default function TableMessages({
+  messages,
+  getAllMessageList,
+  deleteRow
+}) {
   const classes = useStyles();
 
   const [selectedID, setSelectedID] = useState("");
   const [newLocalRow, setNewLocalRow] = useState(false);
+
+  useEffect(() => {
+    getAllMessageList();
+  }, []);
 
   const mutableURL = messages.length > 0 ? messages[0].URLSent.mutableURL : "";
 

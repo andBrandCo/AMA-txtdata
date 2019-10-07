@@ -17,7 +17,10 @@ const auth = {
     }
     return false;
   },
-  clearToken() {}
+  clearToken() {},
+  clearAllAppStorage() {
+    localStorage.clear();
+  }
 };
 
 export default auth;

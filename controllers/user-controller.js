@@ -11,12 +11,14 @@ class UserController {
       : res.status(400).json({ message: "Username or password is incorrect" });
   }
   async createUser(req, res, next) {
-    console.log(" req.body - ", req.body);
-    const newUser = await UserService.createUser(req.body);
-    console.log("CREATED user - ", newUser);
+    try {
+      const newUser = await UserService.createUser(req.body);
+      console.log("CREATED user - ", newUser);
 
-    newUser ? res.send("Registration successful") : next(newUser);
-    // : res.status(400).json({ message: "Something went wrong" });
+      newUser ? res.send("Registration successful") : next(newUser);
+    } catch (err) {
+      next(err);
+    }
   }
 
   async getUserById(req, res, next) {

@@ -8,15 +8,17 @@ exports.authMiddleware = async function(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
-    console.log(decoded);
+    console.log("decoded - ", decoded);
     if (decoded) {
-      const user = await userService.findOne({ _id: decoded.sub });
+      console.log("decoded Ok");
+      const user = await userService.getById(decoded.sub);
       req.user = user;
       return next();
     }
   } catch (err) {
+    console.log("catch block worked!");
     return res.status(400).send(err);
   }
+  console.log("usual case when token not pass");
   res.status(400).send("Bad token");
-  // return decoded
 };

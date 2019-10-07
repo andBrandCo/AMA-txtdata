@@ -40,9 +40,7 @@ class UserService {
     if (await User.findOne({ username: userName })) {
       throw 'Username "' + userName + '" is already taken';
     }
-
     const user = new User({ username: userName });
-
     // hash password
     if (password) {
       console.log("Creating USER - ", user);
@@ -51,8 +49,8 @@ class UserService {
     }
 
     // save user
-    // await user.save();
     return user.save();
+    // throw new Error("ValidationError");
 
     // User.create({ name: req.body.userName, password: req.body.password })
     //   .then(() => {

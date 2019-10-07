@@ -1,6 +1,6 @@
 import MainContainer from "./MainContainer";
 import { connect } from "react-redux";
-import { actions } from "../../../redux/actions/editDataActions";
+import { userLogoutRequest } from "../../../redux/actions/authActions";
 
 const mapStateToProps = state => ({
   name: state.name,
@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  getAllMessageList: actions.getMessageListRequest
+  logout: userLogoutRequest
 };
 
 export default connect(

@@ -1,5 +1,9 @@
 import { takeEvery, put, call } from "redux-saga/effects";
-import { types, setTokenSuccess } from "../actions/authActions";
+import {
+  types,
+  setTokenSuccess,
+  userLogoutSuccess
+} from "../actions/authActions";
 import AuthApiService from "../../services/api/AuthService";
 import AuthService from "../../services/auth";
 
@@ -23,6 +27,17 @@ function* setTokenRequest({ payload }) {
   } catch (err) {}
 }
 
+function* logoutUserRequest() {
+  try {
+    console.log("Start logout");
+    yield call([AuthService, AuthService.clearAllAppStorage]);
+    yield put(userLogoutSuccess());
+    console.log("clear state");
+    // payload.history.push("/messages/keywords");
+  } catch (err) {}
+}
+
 export function* authWatcher() {
   yield takeEvery(`${types.SET_TOKEN}_REQUEST`, setTokenRequest);
+  yield takeEvery(`${types.USER_LOGOUT}_REQUEST`, logoutUserRequest);
 }
