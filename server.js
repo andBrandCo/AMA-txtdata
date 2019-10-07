@@ -59,6 +59,11 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/messages", authMiddleware, require("./routes/messages"));
 app.use("/api/records", authMiddleware, require("./routes/records"));
 
+// return build react app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+});
+
 // global error handler
 app.use(errorHandler);
 
