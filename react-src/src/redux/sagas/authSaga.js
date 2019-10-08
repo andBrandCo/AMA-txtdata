@@ -21,19 +21,17 @@ function* setTokenRequest({ payload }) {
       "token"
     );
     yield put(setTokenSuccess(response.data));
-    console.log("ready to push");
-
     payload.history.push("/messages/keywords");
   } catch (err) {}
 }
 
-function* logoutUserRequest() {
+function* logoutUserRequest({ payload }) {
   try {
     console.log("Start logout");
     yield call([AuthService, AuthService.clearAllAppStorage]);
     yield put(userLogoutSuccess());
     console.log("clear state");
-    // payload.history.push("/messages/keywords");
+    payload.history.push("/login");
   } catch (err) {}
 }
 

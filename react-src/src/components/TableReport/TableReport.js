@@ -11,7 +11,6 @@ import Button from "@material-ui/core/Button";
 import { useStyles } from "./style";
 import { getFormattedDate } from "../../utils";
 import { TableFooter } from "@material-ui/core";
-// import RecordService from "../../services/api/RecordService";
 
 export default function TableReport({
   getRecords,
@@ -44,8 +43,6 @@ export default function TableReport({
               <TableCell align="center">Mobile Number</TableCell>
               <TableCell align="center">URL Sent</TableCell>
               <TableCell align="center">Auto Response</TableCell>
-              {/* <TableCell align="right">MobileNumber</TableCell>
-            <TableCell align="left">AutoResponse</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>

@@ -7,8 +7,8 @@ import { styles } from "./style";
 
 class InputKeyword extends Component {
   state = {
-    message: ""
-    // autoResponseText: ""
+    message: "",
+    mobileNumber: ""
   };
 
   componentDidUpdate(prevProps) {
@@ -26,27 +26,38 @@ class InputKeyword extends Component {
   };
 
   handleClick = () => {
-    this.props.sendKeyword(this.state.message);
+    this.props.sendKeyword({
+      keyword: this.state.message,
+      mobileNumber: this.state.mobileNumber
+    });
+    this.setState({
+      message: "",
+      mobileNumber: ""
+    });
   };
-
-  //   handleResponseSave = () => {
-  //     this.props.sendAutoResponse({
-  //       _id: this.props.keyword._id,
-  //       autoResponse: this.state.autoResponseText
-  //     });
-  //   };
 
   render() {
     const { classes, keyword } = this.props;
-    const { message } = this.state;
+    const { message, mobileNumber } = this.state;
     return (
       <Fragment>
+        <Typography style={{ marginLeft: "30%" }}>
+          These are the fields for testing message sending.
+        </Typography>
         <TextField
           id="input-keyword"
           label="type keyword"
           className={classes.textField}
           value={message}
           onChange={this.handleChange("message")}
+          margin="normal"
+        />
+        <TextField
+          id="mobileNumber"
+          label="mobile Number"
+          className={classes.textField1}
+          value={mobileNumber}
+          onChange={this.handleChange("mobileNumber")}
           margin="normal"
         />
         <Button

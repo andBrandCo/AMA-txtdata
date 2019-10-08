@@ -19,20 +19,8 @@ class UserService {
       return {
         ...userWithoutHash,
         access_token: token
-        // token
       };
     }
-
-    // if (user) {
-    //   const token = jwt.sign({ sub: user.id }, `${process.env.JWT_SECRET}`);
-    //   const { password, ...userWithoutPassword } = user;
-    //   console.log("userWithout pass - ", userWithoutPassword);
-
-    //   return {
-    //     name: user.name,
-    //     access_token: token
-    //   };
-    // }
   }
 
   async createUser({ userName, password }) {
@@ -45,18 +33,10 @@ class UserService {
     if (password) {
       console.log("Creating USER - ", user);
 
-      user.hash = bcrypt.hashSync(password, 10);
+      user.hash = bcrypt.hashSync(password, saltRounds);
     }
 
-    // save user
     return user.save();
-    // throw new Error("ValidationError");
-
-    // User.create({ name: req.body.userName, password: req.body.password })
-    //   .then(() => {
-    //     res.status(200).send("Ok");
-    //   })
-    //   .catch(console.error);
   }
 }
 

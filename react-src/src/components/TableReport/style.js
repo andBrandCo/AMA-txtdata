@@ -11,9 +11,7 @@ export const useStyles = makeStyles(theme => ({
     minWidth: 650
   },
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    backgroundColor: "#3e1c68"
   }
-  // tableCell: {
-  //   width: "200px"
-  // }
 }));

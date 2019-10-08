@@ -8,9 +8,6 @@ export default function(state = initialState, action) {
     case `${types.GET_ALL_RECORD}_SUCCESS`: {
       return [...action.payload];
     }
-    // case wsTypes.GET_NEW_RECORD: {
-    //   return state.concat(action.payload);
-    // }
     default:
       return state;
   }

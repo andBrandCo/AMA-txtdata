@@ -67,42 +67,56 @@ class App extends Component {
   //     });
   // }
 
-  handleUserAdded(user) {
-    let users = this.state.users.slice();
-    users.push(user);
-    this.setState({ users: users });
-  }
+  // handleUserAdded(user) {
+  //   let users = this.state.users.slice();
+  //   users.push(user);
+  //   this.setState({ users: users });
+  // }
 
-  handleUserUpdated(user) {
-    let users = this.state.users.slice();
-    for (let i = 0, n = users.length; i < n; i++) {
-      if (users[i]._id === user._id) {
-        users[i].name = user.name;
-        users[i].email = user.email;
-        users[i].age = user.age;
-        users[i].gender = user.gender;
-        break; // Stop this loop, we found it!
-      }
-    }
-    this.setState({ users: users });
-  }
+  // handleUserUpdated(user) {
+  //   let users = this.state.users.slice();
+  //   for (let i = 0, n = users.length; i < n; i++) {
+  //     if (users[i]._id === user._id) {
+  //       users[i].name = user.name;
+  //       users[i].email = user.email;
+  //       users[i].age = user.age;
+  //       users[i].gender = user.gender;
+  //       break; // Stop this loop, we found it!
+  //     }
+  //   }
+  //   this.setState({ users: users });
+  // }
 
-  handleUserDeleted(user) {
-    let users = this.state.users.slice();
-    users = users.filter(u => {
-      return u._id !== user._id;
-    });
-    this.setState({ users: users });
-  }
+  // handleUserDeleted(user) {
+  //   let users = this.state.users.slice();
+  //   users = users.filter(u => {
+  //     return u._id !== user._id;
+  //   });
+  //   this.setState({ users: users });
+  // }
 
   render() {
-    console.log("REACT_APP_API_URL - ", process.env.REACT_APP_API_URL);
-
     const { isLogged } = this.props;
 
-    // let online = this.state.online;
-    // let verb = online <= 1 ? "is" : "are"; // linking verb, if you'd prefer
-    // let noun = online <= 1 ? "person" : "people";
+    return (
+      <Router history={history}>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() =>
+              isLogged ? (
+                <Redirect to="/messages/keywords" />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route path="/login" component={SignIn} />
+          <PrivateRoute path="/messages" component={MainContainer} />
+        </Switch>
+      </Router>
+    );
 
     // return (
     //   <div>
@@ -136,25 +150,6 @@ class App extends Component {
     //     )}
     //   </div>
     // );
-    return (
-      <Router history={history}>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() =>
-              isLogged ? (
-                <Redirect to="/messages/keywords" />
-              ) : (
-                <Redirect to="/login" />
-              )
-            }
-          />
-          <Route path="/login" component={SignIn} />
-          <PrivateRoute path="/messages" component={MainContainer} />
-        </Switch>
-      </Router>
-    );
   }
 }
 

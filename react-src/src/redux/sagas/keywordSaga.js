@@ -1,20 +1,17 @@
 import { all, takeEvery, put, call } from "redux-saga/effects";
 import { types, actions } from "../actions/editDataActions";
 import editDBDataService from "../../services/api/editDBDataService";
-// import AuthService from "../../services/auth";
 
 function* sendKeywordRequest({ payload }) {
   try {
     console.log(" sendKWR: payload: ", payload);
     const response = yield call(
       [editDBDataService, editDBDataService.sendKeyword],
-      {
-        keyword: payload
-      }
+      payload
     );
     console.log("response: ", response);
     yield put(actions.sendKeywordSuccess(response.data));
-    // yield put(actions.getMessageListRequest());
+    alert("request successfully sent!");
   } catch (err) {
     console.log("err- ", err);
   }
@@ -82,10 +79,6 @@ export function* keywordWatcherSaga() {
   yield takeEvery(`${types.UPDATE_ROW}_REQUEST`, updateRowRequest);
   yield takeEvery(`${types.DELETE_ROW}_REQUEST`, deleteRowRequest);
   yield takeEvery(`${types.CREATE_ROW}_REQUEST`, createRowRequest);
-  // yield takeEvery(
-  //   `${types.SEND_AUTO_RESPONSE}_REQUEST`,
-  //   sendAutoResponseRequest
-  // );
 }
 
 // export default function* rootSaga() {

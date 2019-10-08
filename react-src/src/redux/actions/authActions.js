@@ -16,12 +16,12 @@ export const setTokenFailed = error => ({
   payload: error
 });
 
-export const userLogoutRequest = () => ({
-  type: `${types.USER_LOGOUT}_REQUEST`
-});
-export const userLogoutSuccess = payload => ({
-  type: `${types.USER_LOGOUT}_SUCCESS`,
+export const userLogoutRequest = payload => ({
+  type: `${types.USER_LOGOUT}_REQUEST`,
   payload
+});
+export const userLogoutSuccess = () => ({
+  type: `${types.USER_LOGOUT}_SUCCESS`
 });
 export const userLogoutFailed = error => ({
   type: `${types.USER_LOGOUT}_FAILED`,
