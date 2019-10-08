@@ -14,6 +14,8 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === `${types.USER_LOGOUT}_SUCCESS`) {
+    console.log("logout Action. REducer-clear State ");
+
     return appReducer(undefined, action);
   }
   return appReducer(state, action);
