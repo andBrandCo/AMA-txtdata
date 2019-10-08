@@ -57,6 +57,7 @@ export default class APIService {
   }
 
   static postAuth(url, options = {}) {
+    console.log("PostAuth SERVICE has url - ", this.server);
     return axios.post(`${this.server}${url}`, options, {
       headers: {
         "Content-Type": "application/json"
