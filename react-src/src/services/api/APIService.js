@@ -66,6 +66,8 @@ export default class APIService {
   }
 
   static get(url, query) {
+    console.log("GET SERVICE has url - ", this.server);
+
     return axios.get(
       `${this.server}${url}${
         // query ? `?${this.objectToQueryString(query)}` : ""

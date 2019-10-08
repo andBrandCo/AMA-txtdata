@@ -96,6 +96,8 @@ class App extends Component {
   }
 
   render() {
+    console.log("REACT_APP_API_URL - ", process.env.REACT_APP_API_URL);
+
     const { isLogged } = this.props;
 
     // let online = this.state.online;
