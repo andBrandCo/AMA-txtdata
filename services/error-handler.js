@@ -1,6 +1,6 @@
 function errorHandler(err, req, res, next) {
   console.log("error Handler worked!");
-  console.log("error name - ", err.name);
+  console.log("ERRRRR - ", err);
 
   if (typeof err === "string") {
     // custom application error

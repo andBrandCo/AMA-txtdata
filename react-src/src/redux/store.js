@@ -5,18 +5,13 @@ import { authWatcher } from "./sagas/authSaga";
 import { keywordWatcherSaga } from "./sagas/keywordSaga";
 import { recordWatcher } from "./sagas/recordSaga";
 // import { wsMiddleware } from "../services/socket/wsMiddleware";
+import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
 
 const sagaMiddleware = createSagaMiddleware();
-// const reduxDevtools =
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-
 const store = createStore(
   reducer,
-  compose(
-    applyMiddleware(sagaMiddleware, logger)
-    // reduxDevtools
-  )
+  composeWithDevTools(applyMiddleware(sagaMiddleware, logger))
 );
 sagaMiddleware.run(authWatcher);
 sagaMiddleware.run(keywordWatcherSaga);
