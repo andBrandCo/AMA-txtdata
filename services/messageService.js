@@ -1,7 +1,9 @@
+const MessagingResponse = require("twilio").twiml.MessagingResponse;
+
 const Message = require("../models/message");
 const { bitlyRequest } = require("../tools/bitly");
 const { mutableURLTemplate } = require("../models/const");
-const { testSendRequestToTwilio } = require("../tools/twilio_send_sms");
+// const { testSendRequestToTwilio } = require("../tools/twilio_send_sms");
 const recordService = require("./recordService");
 const phoneNumberService = require("./phoneNumberService");
 
@@ -10,7 +12,7 @@ const PhoneNumberService = new phoneNumberService();
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
-const findByKeyword = async (keyword, mobileNumber) => {
+const findByKeyword = async (keyword, mobileNumber, res) => {
   const row = await Message.findOne({ keyword });
   const phoneData = await PhoneNumberService.findPhoneOrCreate({
     mobileNumber
@@ -25,19 +27,22 @@ const findByKeyword = async (keyword, mobileNumber) => {
     console.log("SHORT link - ", link);
     const autoResponse = `${row.autoResponseBeforeURL} [ ${link} ] ${row.autoResponseAfterURL}`;
     console.log("autoRESp - ", autoResponse);
-
-    testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
-    return RecordService.addRow({
+    RecordService.addRow({
       mobileNumber,
       phoneID: phoneData._id,
       autoResponse,
       urlSent: row.URLSent.wholeURL,
       keyword
     });
+    const twiml = new MessagingResponse();
+    twiml.message(autoResponse);
+    res.writeHead(200, { "Content-Type": "text/xml" });
+    res.end(twiml.toString());
+    // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
   }
   console.log("this keyword Dosnt exist!!");
 
-  return RecordService.addRow({
+  RecordService.addRow({
     keyword,
     mobileNumber,
     phoneID: phoneData._id

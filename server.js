@@ -56,7 +56,8 @@ if (process.env.CORS) {
 // Uncomment this after user creation
 // app.use(jwt());
 app.use("/api/users", require("./routes/users"));
-app.use("/api/messages", authMiddleware, require("./routes/messages"));
+// app.use("/api/messages", authMiddleware, require("./routes/messages"));
+app.use("/api/messages", require("./routes/messages"));
 app.use("/api/records", authMiddleware, require("./routes/records"));
 
 // return build react app

@@ -10,12 +10,15 @@ class MessageController {
   }
 
   async findMessagesByKeyword(req, res) {
-    let { keyword, mobileNumber } = req.body;
+    // let { keyword, mobileNumber } = req.body;
+    const { Body, From } = req.body;
     // keyword = keyword.toUpperCase();
-    console.log("req.body in find Message - ", req.body);
+    console.log("req.headers in keyword req - ", req.headers);
+    console.log("req.body in keyword req - ", req.body);
 
-    const row = await messageService.findByKeyword(keyword, mobileNumber);
-    row ? res.status(200).send(row) : res.status(404).send("Not found");
+    // const row = await messageService.findByKeyword(keyword, mobileNumber);
+    await messageService.findByKeyword(Body, From, res);
+    // row ? res.status(200).send(row) : res.status(404).send("Not found");
   }
 
   async createNewMessage(req, res) {

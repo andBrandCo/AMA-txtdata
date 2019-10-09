@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 // const RateLimit = require('express-rate-limit');
-// const mongoose = require('mongoose');
 const MessageController = require("../controllers/message-controller");
 const Message = require("../models/message");
+const { authMiddleware } = require("../middleware/authMiddleware");
+// const { twilioMiddleware } = require("../middleware/twilioMiddleware");
 
 router.post("/twilio/", (req, res) => {
   let newMessage = new Message({
@@ -45,27 +46,29 @@ router.post("/message", (...args) => {
   }
 });
 
-router.put("/:id", (...args) => {
+router.put("/:id", authMiddleware, (...args) => {
   try {
     new MessageController().updateRow(...args);
   } catch (e) {
     console.log("rout update message error", e);
   }
 });
-router.delete("/:id", (...args) => {
+router.delete("/:id", authMiddleware, (...args) => {
   try {
     new MessageController().deleteRow(...args);
   } catch (e) {
     console.log("rout delete error", e);
   }
 });
-router.post("/row", (...args) => {
+router.post("/row", authMiddleware, (...args) => {
   try {
     new MessageController().createRow(...args);
   } catch (e) {
     console.log("rout create error", e);
   }
 });
-router.get("/", (...args) => new MessageController().getAllMessages(...args));
+router.get("/", authMiddleware, (...args) =>
+  new MessageController().getAllMessages(...args)
+);
 
 module.exports = router;
