@@ -1,10 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const url = require('url');
+const querystring = require('querystring');
 // const RateLimit = require('express-rate-limit');
 const MessageController = require("../controllers/message-controller");
 const Message = require("../models/message");
 const { authMiddleware } = require("../middleware/authMiddleware");
 // const { twilioMiddleware } = require("../middleware/twilioMiddleware");
+
+var bodyParser = require('body-parser')
+
+// create application/json parser
+var jsonParser = bodyParser.json()
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.post("/twilio/", (req, res) => {
   let newMessage = new Message({
@@ -38,7 +48,7 @@ router.post("/twilio/", (req, res) => {
     });
 });
 
-router.post("/message", (...args) => {
+router.post("/message", urlencodedParser, (...args) => {
   try {
     new MessageController().findMessagesByKeyword(...args);
   } catch (e) {

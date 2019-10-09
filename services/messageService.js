@@ -29,7 +29,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       data: { link }
     } = await bitlyRequest(`${row.URLSent.mutableURL}${phoneData._id}`);
     console.log("SHORT link - ", link);
-    const autoResponse = `${row.autoResponseBeforeURL} [ ${link} ] ${row.autoResponseAfterURL}`;
+    const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
     console.log("autoRESp - ", autoResponse);
     RecordService.addRow({
       mobileNumber,
@@ -39,9 +39,9 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       keyword
     });
     const twiml = new MessagingResponse();
-    res.writeHead(200, {'Content-Type': 'text/xml'});
     console.log(autoResponse)
     twiml.message(autoResponse);
+    res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
     // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
   }
