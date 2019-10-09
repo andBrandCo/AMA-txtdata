@@ -40,9 +40,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     });
     const twiml = new MessagingResponse();
     console.log(autoResponse)
-    //twiml.message(autoResponse);
-    twiml.message('The Robots are coming! Head for the hills!');
-    res.writeHead(200, { "Content-Type": "text/xml" });
+    twiml.message(autoResponse);
+    res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
     // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
   }
