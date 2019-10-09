@@ -11,9 +11,12 @@ class MessageController {
 
   async findMessagesByKeyword(req, res) {
     // let { keyword, mobileNumber } = req.body;
-    const { Body, From } = req.body;
+    const { Body, From } = req.query;
+    console.log(req.body)
     // keyword = keyword.toUpperCase();
     console.log("req.headers in keyword req - ", req.headers);
+    //console.log("req.headers in keyword req - ", req);
+    //console.log("req.headers in keyword req - ", res);
     console.log("req.body in keyword req - ", req.body);
 
     // const row = await messageService.findByKeyword(keyword, mobileNumber);
