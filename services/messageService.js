@@ -13,6 +13,9 @@ const PhoneNumberService = new phoneNumberService();
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
 const findByKeyword = async (keyword, mobileNumber, res) => {
+  console.log(keyword)
+  console.log(mobileNumber)
+  console.log(res)
   const row = await Message.findOne({ keyword });
   const phoneData = await PhoneNumberService.findPhoneOrCreate({
     mobileNumber
@@ -35,6 +38,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       keyword
     });
     const twiml = new MessagingResponse();
+    console.log(autoResponse)
     twiml.message(autoResponse);
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
