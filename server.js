@@ -8,6 +8,7 @@ const socket = require("socket.io");
 const config = require("./config/db");
 const morgan = require("morgan");
 require("dotenv").config();
+require("./services/wakeUpService");
 const errorHandler = require("./services/error-handler");
 const { authMiddleware } = require("./middleware/authMiddleware");
 
