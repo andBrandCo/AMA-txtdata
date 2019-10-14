@@ -39,19 +39,21 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       keyword
     });
     const twiml = new MessagingResponse();
-    console.log(autoResponse)
     twiml.message(autoResponse);
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
     // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
-  }
-  console.log("this keyword Dosnt exist!!");
+  } else {
 
-  RecordService.addRow({
-    keyword,
-    mobileNumber,
-    phoneID: phoneData._id
-  });
+    console.log("this keyword Dosnt exist!!");
+
+    RecordService.addRow({
+      keyword,
+      mobileNumber,
+      phoneID: phoneData._id
+    });
+  }
+
 };
 
 const updateRow = async ({
