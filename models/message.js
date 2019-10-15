@@ -41,7 +41,13 @@ const MessageSchema = new mongoose.Schema(
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-MessageSchema.set("toJSON", { virtuals: true });
+MessageSchema.set("toJSON", {
+  virtuals: true,
+  transform: (doc, ret, options) => {
+    ret.id = ret._id.toString();
+    delete ret._id;
+  }
+});
 MessageSchema.virtual("URLSent.wholeURL").get(function() {
   return `${this.URLSent.mutableURL}${this._id}`;
 });

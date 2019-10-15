@@ -1,5 +1,5 @@
 const messageService = require("../services/messageService");
-const MessagingResponse = require("twilio").twiml.MessagingResponse;
+// const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
 class MessageController {
   async getAllMessages(req, res) {
@@ -11,16 +11,17 @@ class MessageController {
   }
 
   async findMessagesByKeyword(req, res) {
-    // let { keyword, mobileNumber } = req.body;
+    let { keyword, mobileNumber } = req.body;
+
     const { Body, From } = req.body;
-    //console.log(req.body)
+
     // keyword = keyword.toUpperCase();
-    console.log("req.headers in keyword req - ", req.headers);
+    // console.log("req.headers in keyword req - ", req.headers);
     //console.log("req.headers in keyword req - ", req);
     //console.log("req.headers in keyword req - ", res);
     //console.log("req.body in keyword req - ", req.body);
 
-    // const row = await messageService.findByKeyword(keyword, mobileNumber);
+    // await messageService.findByKeyword(keyword, mobileNumber, res);
     await messageService.findByKeyword(Body, From, res);
     // row ? res.status(200).send(row) : res.status(404).send("Not found");
   }

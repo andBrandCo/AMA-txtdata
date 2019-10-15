@@ -20,7 +20,13 @@ const PhoneNumberSchema = new mongoose.Schema(
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-PhoneNumberSchema.set("toJSON", { virtuals: true });
+PhoneNumberSchema.set("toJSON", {
+  virtuals: true,
+  transform: (doc, ret, options) => {
+    ret.id = ret._id.toString();
+    delete ret._id;
+  }
+});
 
 const PhoneNumber = (module.exports = mongoose.model(
   "phoneNumber",

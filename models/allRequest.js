@@ -33,7 +33,13 @@ const AllRequestSchema = new mongoose.Schema(
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-AllRequestSchema.set("toJSON", { virtuals: true });
+AllRequestSchema.set("toJSON", {
+  virtuals: true,
+  transform: (doc, ret, options) => {
+    ret.id = ret._id.toString();
+    delete ret._id;
+  }
+});
 
 const allRequest = (module.exports = mongoose.model(
   "allRequest",
