@@ -52,7 +52,7 @@ router.post("/twilio/", (req, res) => {
 
 router.post(
   "/message",
-  twilio.webhook({ validate: shouldValidate }),
+  twilio.webhook({ validate: false }),
   urlencodedParser,
   (...args) => {
     try {
