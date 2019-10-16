@@ -52,7 +52,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       RecordService.addRow({
         mobileNumber,
         phoneID: phoneData._id,
-        autoResponseNolink,
+        autoResponse: autoResponseNolink,
         urlSent: row.URLSent.wholeURL,
         keyword
       });
