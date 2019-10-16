@@ -24,6 +24,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
   console.log("row in service - ", row);
   if (row) {
+    console.log(row.URLSent)
+    console.log(row.URLSent.mutableURL)
     if(row.URLSent.mutableURL){
       const {
         data: { link }
