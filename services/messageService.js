@@ -48,9 +48,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
       const autoResponseNolink = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
 
-      console.log("SHORT link - ", link);
-      const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
-      console.log("autoRESp - ", autoResponse);
+      console.log("autoNoLinkRESp - ", autoResponseNolin);
       RecordService.addRow({
         mobileNumber,
         phoneID: phoneData._id,
