@@ -31,13 +31,16 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       console.log("SHORT link - ", link);
       const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
       console.log("autoRESp - ", autoResponse);
-      RecordService.addRow({
+     const rowAddedData =  RecordService.addRow({
         mobileNumber,
         phoneID: phoneData._id,
         autoResponse,
         urlSent: row.URLSent.wholeURL,
         keyword
       });
+
+      console.log(rowAddedData);
+
       const twiml = new MessagingResponse();
       twiml.message(autoResponse);
       res.writeHead(200, { "Content-Type": "text/xml" });
