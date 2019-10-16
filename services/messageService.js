@@ -24,19 +24,12 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
   console.log("row in service - ", row);
   if (row) {
-    const autoResponse;
-    console.log('url sent' + row.URLSent)
-    console.log('mutableURL' + row.URLSent.mutableURL)
     if(row.URLSent.mutableURL){
       const {
         data: { link }
       } = await bitlyRequest(`${row.URLSent.mutableURL}${phoneData._id}`);
       console.log("SHORT link - ", link);
-        autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
-    } else{
-
-        autoResponse = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
-    }
+      const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
       console.log("autoRESp - ", autoResponse);
       RecordService.addRow({
         mobileNumber,
@@ -50,6 +43,27 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
       // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
+
+    } else{
+
+      const autoResponseNolink = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
+
+      console.log("SHORT link - ", link);
+      const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
+      console.log("autoRESp - ", autoResponse);
+      RecordService.addRow({
+        mobileNumber,
+        phoneID: phoneData._id,
+        autoResponseNolink,
+        urlSent: row.URLSent.wholeURL,
+        keyword
+      });
+      const twiml = new MessagingResponse();
+      twiml.message(autoResponseNolink);
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(twiml.toString());
+      // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
+    }
   
   } else {
     const twiml = new MessagingResponse();
