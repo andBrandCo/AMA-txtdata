@@ -24,17 +24,18 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
   console.log("row in service - ", row);
   if (row) {
-    console.log(row.URLSent)
-    console.log(row.URLSent.mutableURL)
+    const autoResponse;
+    console.log('url sent' + row.URLSent)
+    console.log('mutableURL' + row.URLSent.mutableURL)
     if(row.URLSent.mutableURL){
       const {
         data: { link }
       } = await bitlyRequest(`${row.URLSent.mutableURL}${phoneData._id}`);
       console.log("SHORT link - ", link);
-      const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
+        autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
     } else{
 
-      const autoResponse = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
+        autoResponse = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
     }
       console.log("autoRESp - ", autoResponse);
       RecordService.addRow({
