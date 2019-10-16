@@ -53,7 +53,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         mobileNumber,
         phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
-        urlSent: row.URLSent.wholeURL,
+        urlSent: '',
         keyword
       });
       const twiml = new MessagingResponse();
