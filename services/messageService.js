@@ -21,7 +21,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     mobileNumber
   });
 
-  const rowAddedData = await PhoneNumberService.addRow({
+  const rowAddedData = await RecordService.addRow({
     mobileNumber,
     keyword
   });
