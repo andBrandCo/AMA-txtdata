@@ -33,6 +33,7 @@ class RecordService {
       // of docs that MongoDB updated
       console.log(err)
     });
+    await request.update({_id: id}, { urlSent: 'true' });
     //await request.save();
     console.log(request);
     return request;
