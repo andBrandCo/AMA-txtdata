@@ -15,7 +15,7 @@ class RecordService {
 
     const request = new allRequest(data);
     console.log("new request - ", request);
-    delete data._id;
+    //delete data._id;
     await request.save();
     console.log(request);
     return request;
