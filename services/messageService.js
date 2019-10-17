@@ -32,6 +32,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         keyword
       });
 
+      console.log(rowAddedData._id)
+
       const {
         data: { link }
       } = await bitlyRequest(`${row.URLSent.mutableURL}${rowAddedData._id}`);
