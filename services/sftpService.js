@@ -3,14 +3,14 @@ let client = new Client();
 
 class SFTPService {
   sendAllRecord(csvData, res) {
-    let remoteFile = process.env.LOCAL_PASS_TO_SAVE_REPORT;
+    let remoteFile = process.env.REMOTE_PC_PASS_TO_SAVE_REPORT;
     const readStream = new Buffer.from(csvData);
     client
       .connect({
-        host: "localhost",
-        port: "22",
-        username: process.env.LOCAL_SERVER_NAME,
-        password: process.env.LOCAL_PASS
+        host: process.env.REMOTE_PC_HOST,
+        port: process.env.REMOTE_PC_PORT,
+        username: process.env.REMOTE_PC_SERVER_NAME,
+        password: process.env.REMOTE_PC_PASSWORD
       })
       .then(() => {
         return client.put(readStream, remoteFile);

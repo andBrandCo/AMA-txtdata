@@ -22,7 +22,8 @@ function* downloadRecordRequest() {
       RecordService,
       RecordService.getAllRecordCSVList
     ]);
-    const fileName = "AllRecords.csv";
+    const date = new Date();
+    const fileName = `AllRecords ${date.toISOString()}.csv`;
     const csvData = new Blob([data], { type: "text/csv;charset=utf-8;" });
     saveAs(csvData, fileName);
   } catch (err) {}

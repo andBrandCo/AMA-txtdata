@@ -1,20 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const url = require('url');
-const querystring = require('querystring');
+const url = require("url");
+const querystring = require("querystring");
+const twilio = require("twilio");
 // const RateLimit = require('express-rate-limit');
 const MessageController = require("../controllers/message-controller");
 const Message = require("../models/message");
 const { authMiddleware } = require("../middleware/authMiddleware");
 // const { twilioMiddleware } = require("../middleware/twilioMiddleware");
 
-var bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 
 // create application/json parser
-var jsonParser = bodyParser.json()
+// const jsonParser = bodyParser.json();
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const shouldValidate = process.env.NODE_ENV !== "test";
 
 router.post("/twilio/", (req, res) => {
   let newMessage = new Message({
@@ -48,13 +50,18 @@ router.post("/twilio/", (req, res) => {
     });
 });
 
-router.post("/message", urlencodedParser, (...args) => {
-  try {
-    new MessageController().findMessagesByKeyword(...args);
-  } catch (e) {
-    console.log("rout error", e);
+router.post(
+  "/message",
+  twilio.webhook({ validate: false }),
+  urlencodedParser,
+  (...args) => {
+    try {
+      new MessageController().findMessagesByKeyword(...args);
+    } catch (e) {
+      console.log("rout error", e);
+    }
   }
-});
+);
 
 router.put("/:id", authMiddleware, (...args) => {
   try {
