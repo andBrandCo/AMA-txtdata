@@ -25,13 +25,22 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
   console.log("row in service - ", row);
   if (row) {
     if(row.URLSent.mutableURL){
+      
+     const { rowAddedData } =  await RecordService.addRow({
+        mobileNumber,
+        phoneID: phoneData._id,
+        keyword
+      });
+
       const {
         data: { link }
-      } = await bitlyRequest(`${row.URLSent.mutableURL}${phoneData._id}`);
+      } = await bitlyRequest(`${row.URLSent.mutableURL}${rowAddedData._id}`);
       console.log("SHORT link - ", link);
       const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
       console.log("autoRESp - ", autoResponse);
-     const rowAddedData =  RecordService.addRow({
+
+      RecordService.updateRow({
+        _id: rowAddedData._id,
         mobileNumber,
         phoneID: phoneData._id,
         autoResponse,
@@ -39,7 +48,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         keyword
       });
 
-      console.log(rowAddedData);
+      
 
       const twiml = new MessagingResponse();
       twiml.message(autoResponse);
