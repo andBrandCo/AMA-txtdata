@@ -49,7 +49,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
       console.log("autoRESp - ", autoResponse);
 
-      RecordService.updateRow({
+      RecordService.updateRow( rowAddedData._id, {
         _id: rowAddedData._id,
         mobileNumber,
         phoneID: phoneData._id,
