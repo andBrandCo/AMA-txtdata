@@ -28,11 +28,11 @@ class RecordService {
     // Otherwise, update the existing doc with upsertData
     //request.update({_id: data._id}, data, {upsert: true}, function((err){}));
     //await request
-    await request.update({_id: id}, data, {upsert: true}, function(err, res) {
-      // Updated at most one doc, `res.modifiedCount` contains the number
-      // of docs that MongoDB updated
-      console.log(err)
-    });
+    // await request.update({_id: id}, data, {upsert: true}, function(err, res) {
+    //   // Updated at most one doc, `res.modifiedCount` contains the number
+    //   // of docs that MongoDB updated
+    //   console.log(err)
+    // });
     await request.update({_id: id}, { urlSent: 'true' });
     //await request.save();
     console.log(request);
