@@ -44,6 +44,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const {
         data: { link }
       } = await bitlyRequest(`${row.URLSent.mutableURL}${rowAddedData._id}`);
+      const wholeURL = `${row.URLSent.mutableURL}${rowAddedData._id}`
       console.log("SHORT link - ", link);
       const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
       console.log("autoRESp - ", autoResponse);
@@ -53,7 +54,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         mobileNumber,
         phoneID: phoneData._id,
         autoResponse,
-        urlSent: row.URLSent.wholeURL,
+        urlSent: wholeURL,
         keyword
       });
 

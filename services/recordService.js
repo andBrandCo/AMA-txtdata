@@ -12,7 +12,7 @@ class RecordService {
   }
   async updateRow(data) {
     console.log("REQ service update row DATA - ", data);
-    data.keyword = "foo";
+    //data.keyword = "foo";
 
     const request = new allRequest(data);
     console.log("new request - ", request);
