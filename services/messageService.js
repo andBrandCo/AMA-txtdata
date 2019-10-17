@@ -20,17 +20,24 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
   const phoneData = await PhoneNumberService.findPhoneOrCreate({
     mobileNumber
   });
+
+  const rowAddedData = await PhoneNumberService.addRow({
+    mobileNumber,
+    keyword
+  });
+
+
   console.log("PHHHHHOOOONE data come back - ", phoneData);
 
   console.log("row in service - ", row);
   if (row) {
     if(row.URLSent.mutableURL){
       
-     const { rowAddedData } =  await RecordService.addRow({
-        mobileNumber,
-        phoneID: phoneData._id,
-        keyword
-      });
+    //  const { rowAddedData } =  await RecordService.addRow({
+    //     mobileNumber,
+    //     phoneID: phoneData._id,
+    //     keyword
+    //   });
 
       console.log(rowAddedData._id)
 
