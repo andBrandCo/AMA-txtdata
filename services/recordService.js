@@ -19,14 +19,19 @@ class RecordService {
     //request.delete();
 
     //delete data._id;
-    //console.log("update");
+    console.log("update");
 
     // Do the upsert, which works like this: If no Contact document exists with 
     // _id = contact.id, then create a new doc using upsertData.
     // Otherwise, update the existing doc with upsertData
     //request.update({_id: data._id}, data, {upsert: true}, function((err){}));
     //await request
-    await request.save();
+    await request.updateOne({_id: data._id}, data, function(err, res) {
+      // Updated at most one doc, `res.modifiedCount` contains the number
+      // of docs that MongoDB updated
+      console.log(err)
+    });
+    //await request.save();
     console.log(request);
     return request;
   }
