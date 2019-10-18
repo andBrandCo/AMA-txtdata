@@ -12,23 +12,14 @@ const PhoneNumberService = new phoneNumberService();
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
-const keyword = "Join";
-const mobileNumber = "Join"
-const findByKeyword = async (keyword, mobileNumber, res) => {
+const findByKeyword = async (keyword = "help", mobileNumber= "+16126699349", res) => {
 
   const row = await Message.findOne({ keyword });
   const phoneData = await PhoneNumberService.findPhoneOrCreate({
     mobileNumber
   });
 
-  const rowAddedData = await RecordService.addRow({
-    mobileNumber,
-    keyword,
-    uid: '',
-    phoneID: '',
-    autoResponse:'',
-    urlSent: ''
-  });
+
 
 
   console.log("PHHHHHOOOONE data come back - ", phoneData);
@@ -36,6 +27,15 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
   console.log("row in service - ", row);
   if (row) {
     if(row.URLSent.mutableURL){
+
+      const rowAddedData = await RecordService.addRow({
+        mobileNumber,
+        keyword,
+        uid: '',
+        phoneID: '',
+        autoResponse:'',
+        urlSent: ''
+      });
     
 
       const {
