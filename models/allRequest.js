@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 // Define the database model
 const AllRequestSchema = new mongoose.Schema(
   {
+    uid: {
+      type: String
+    },
     phoneID: {
       type: String
     },
