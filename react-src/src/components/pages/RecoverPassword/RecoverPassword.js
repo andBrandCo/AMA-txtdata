@@ -4,23 +4,26 @@ import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-
+import spinner from "../../../assets/loading_spinner.gif";
 import { useStyles } from "./style";
-import AuthService from "../../../services/api/AuthService";
 
-const RecoverPassword = () => {
+const RecoverPassword = ({ RecoverPassword, loading, submitted }) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const sendPasswordResetEmail = async e => {
     e.preventDefault();
-    const response = await AuthService.recoverPassword({ email });
-    console.log("Response - ", response);
-
+    RecoverPassword(email);
     setEmail("");
-    setSubmitted(true);
+    // setSubmitted(true);
   };
+  if (loading) {
+    return (
+      <Container component="main" maxWidth="xs">
+        <img src={spinner} alt="loading gif" />
+      </Container>
+    );
+  }
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -30,10 +33,7 @@ const RecoverPassword = () => {
         <br />
         {submitted ? (
           <Fragment>
-            <p>
-              If that account is in our system, we emailed you a link to reset
-              your password.
-            </p>
+            <p>We emailed you a link to reset your password.</p>
             <Link to="/login">Return to sign in</Link>
           </Fragment>
         ) : (
@@ -41,11 +41,7 @@ const RecoverPassword = () => {
             <Typography component="p" variant="body2">
               Enter your email and we'll send you reset instructions.
             </Typography>
-            <form
-              className={classes.form}
-              onSubmit={sendPasswordResetEmail}
-              noValidate
-            >
+            <form className={classes.form} onSubmit={sendPasswordResetEmail}>
               <TextField
                 variant="outlined"
                 margin="normal"

@@ -43,10 +43,7 @@ const UpdatePassword = ({ userId, token }) => {
           </Fragment>
         ) : (
           <Fragment>
-            {/* <Typography component="p" variant="body2">
-              Enter your email and we'll send you reset instructions.
-            </Typography> */}
-            <form className={classes.form} onSubmit={updatePassword} noValidate>
+            <form className={classes.form} onSubmit={updatePassword}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -54,6 +51,7 @@ const UpdatePassword = ({ userId, token }) => {
                 fullWidth
                 id="password"
                 label="password"
+                type="password"
                 name="password"
                 autoComplete="password"
                 autoFocus
@@ -66,6 +64,7 @@ const UpdatePassword = ({ userId, token }) => {
                 margin="normal"
                 required
                 fullWidth
+                type="password"
                 id="confirmPassword"
                 label="confirm Password"
                 name="confirmPassword"

@@ -32,7 +32,8 @@ class UserController {
       res.status(200).send("Message sent successfully");
     } catch (err) {
       err.message = "User not exist!";
-      next(err);
+      res.status(404).send("User not exist in DB!");
+      // next(err);
     }
   }
 
