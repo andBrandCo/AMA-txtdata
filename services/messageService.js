@@ -12,7 +12,7 @@ const PhoneNumberService = new phoneNumberService();
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
-const findByKeyword = async (keyword = "help", mobileNumber= "+16126699349", res) => {
+const findByKeyword = async (keyword, mobileNumber, res) => {
 
   const row = await Message.findOne({ keyword });
   const phoneData = await PhoneNumberService.findPhoneOrCreate({
