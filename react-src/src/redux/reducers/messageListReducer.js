@@ -7,12 +7,12 @@ export default function(state = initialState, action) {
     case `${types.GET_MESSAGE_LIST}_SUCCESS`: {
       return [...action.payload];
     }
-    case `${types.SEND_KEYWORD}_SUCCESS`: {
-      if (!state.some(({ keyword }) => keyword === action.payload.keyword)) {
-        return state.concat(action.payload);
-      }
-      return state;
-    }
+    // case `${types.SEND_KEYWORD}_SUCCESS`: {
+    //   if (!state.some(({ keyword }) => keyword === action.payload.keyword)) {
+    //     return state.concat(action.payload);
+    //   }
+    //   return state;
+    // }
     case `${types.UPDATE_ROW}_SUCCESS`: {
       const newState = state.map(elem => {
         if (elem.id === action.payload.id) {

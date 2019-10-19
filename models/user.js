@@ -5,9 +5,14 @@ const validate = require("mongoose-validator");
 const nameValidator = [
   validate({
     validator: "isLength",
-    arguments: [0, 40],
-    message: "Name must not exceed {ARGS[1]} characters."
+    arguments: [3, 50],
+    message: "Name should be between {ARGS[0]} and {ARGS[1]} characters"
   })
+  // validate({
+  //   validator: 'isAlphanumeric',
+  //   passIfEmpty: true,
+  //   message: 'Name should contain alpha-numeric characters only',
+  // }),
 ];
 
 const emailValidator = [
@@ -56,13 +61,30 @@ const genderValidator = [
 // Use the unique validator plugin
 // UserSchema.plugin(unique, { message: 'That {PATH} is already taken.' });
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String
+const UserSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: [true, "Name is required."],
+      validate: nameValidator
+    },
+    hash: {
+      type: String,
+      required: true
+    }
   },
-  password: {
-    type: String
+  {
+    timestamps: true,
+    versionKey: false
+  }
+);
+
+UserSchema.set("toJSON", {
+  virtuals: true,
+  transform: (doc, ret, options) => {
+    ret.id = ret._id.toString();
+    delete ret._id;
   }
 });
-
 const User = (module.exports = mongoose.model("user", UserSchema));

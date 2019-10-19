@@ -6,7 +6,7 @@ const token = authService.getToken("token");
 const initialState = {
   name: "",
   token,
-  isLogged: token ? true : false
+  isLogged: !!token
 };
 
 export default function(state = initialState, action) {

@@ -4,10 +4,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const socket = require("socket.io");
-const jwt = require("./auth/jwt");
+// const jwt = require("./auth/jwt");
 const config = require("./config/db");
 const morgan = require("morgan");
 require("dotenv").config();
+require("./services/wakeUpService");
+const errorHandler = require("./services/error-handler");
+const { authMiddleware } = require("./middleware/authMiddleware");
 
 // Use Node's default promise instead of Mongoose's promise library
 mongoose.Promise = global.Promise;
@@ -16,7 +19,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.db, {
   useNewUrlParser: true,
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 });
 let db = mongoose.connection;
 
@@ -51,15 +55,25 @@ if (process.env.CORS) {
 
 // Initialize routes middleware
 // Uncomment this after user creation
-app.use(jwt());
+// app.use(jwt());
 app.use("/api/users", require("./routes/users"));
+// app.use("/api/messages", authMiddleware, require("./routes/messages"));
 app.use("/api/messages", require("./routes/messages"));
+app.use("/api/records", authMiddleware, require("./routes/records"));
+
+// return build react app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+});
+
+// global error handler
+app.use(errorHandler);
 
 // Use express's default error handling middleware
-app.use((err, req, res, next) => {
-  if (res.headersSent) return next(err);
-  res.status(400).json({ err: err });
-});
+// app.use((err, req, res, next) => {
+//   if (res.headersSent) return next(err);
+//   res.status(400).json({ err: err });
+// });
 
 // Start the server
 const port = process.env.PORT || 3000;
@@ -76,11 +90,11 @@ io.on("connection", socket => {
   online++;
   console.log(`Socket ${socket.id} connected.`);
   console.log(`Online: ${online}`);
-  io.emit("visitor enters", online);
+  // io.emit("visitor enters", online);
 
-  socket.on("add", data => socket.broadcast.emit("add", data));
-  socket.on("update", data => socket.broadcast.emit("update", data));
-  socket.on("delete", data => socket.broadcast.emit("delete", data));
+  // socket.on("add", data => socket.broadcast.emit("add", data));
+  // socket.on("update", data => socket.broadcast.emit("update", data));
+  // socket.on("delete", data => socket.broadcast.emit("delete", data));
 
   socket.on("disconnect", () => {
     online--;

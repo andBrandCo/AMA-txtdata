@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { styles } from "./style";
 
-class InputAutoResponseEnd extends Component {
+class InputAutoResponse extends Component {
   render() {
     const { classes, handleChange, text, id, placeholder } = this.props;
     return (
@@ -25,4 +25,4 @@ class InputAutoResponseEnd extends Component {
   }
 }
 
-export default withStyles(styles)(InputAutoResponseEnd);
+export default withStyles(styles)(InputAutoResponse);

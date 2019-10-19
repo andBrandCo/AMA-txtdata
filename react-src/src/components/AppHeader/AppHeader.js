@@ -8,9 +8,9 @@ import { Link } from "react-router-dom";
 // import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./style";
 
-export default function AppHeader() {
+export default function AppHeader({ logout, history }) {
   const classes = useStyles();
-
+  const logoutHandler = () => logout({ history });
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{ backgroundColor: "#3e1c68" }}>
@@ -23,16 +23,18 @@ export default function AppHeader() {
           >
             <MenuIcon />
           </IconButton> */}
-          <Link to="/messages/keywords">
+          <Link to="/messages/keywords" className={classes.link}>
             <Button color="inherit">Keywords</Button>
           </Link>
 
           <Typography variant="h6" className={classes.title}>
-            <Link to="/messages/report">
+            <Link to="/messages/report" className={classes.link}>
               <Button color="inherit">Report</Button>
             </Link>
           </Typography>
-          <Button color="inherit">Logout</Button>
+          <Button color="inherit" onClick={logoutHandler}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

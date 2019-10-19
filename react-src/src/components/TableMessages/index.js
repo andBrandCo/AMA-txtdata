@@ -7,7 +7,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  deleteRow: actions.deleteRowRequest
+  deleteRow: actions.deleteRowRequest,
+  getAllMessageList: actions.getMessageListRequest
 };
 
 export default connect(
