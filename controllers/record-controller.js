@@ -25,7 +25,8 @@ class RecordController {
     const recordList = await RecordService.getAllRecordList();
     const csvData = convertToCSV(recordList);
     console.log("ready to send sftp req!");
-    SFTPService.sendAllRecord(csvData, res);
+    // SFTPService.sendAllRecord(csvData, res);
+    SFTPService.sendAllRecordByFTP(csvData, res);
     // console.log("result- ", result);
 
     // res.send("ok");

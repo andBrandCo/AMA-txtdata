@@ -7,4 +7,17 @@ export default class AuthService extends APIService {
       password
     });
   }
+
+  static updatePassword({ password, userId, token }) {
+    return AuthService.postAuth(
+      `/api/users/reset-password/receive-new-password/${userId}/${token}`,
+      {
+        password
+      }
+    );
+  }
+
+  static recoverPassword({ email }) {
+    return AuthService.postAuth(`/api/users/reset-password/user/${email}`);
+  }
 }
