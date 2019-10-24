@@ -2,7 +2,9 @@ import { takeEvery, put, call } from "redux-saga/effects";
 import {
   types,
   setTokenSuccess,
-  userLogoutSuccess
+  userLogoutSuccess,
+  recoverPasswordSuccess,
+  recoverPasswordFailed
 } from "../actions/authActions";
 import AuthApiService from "../../services/api/AuthService";
 import AuthService from "../../services/auth";
@@ -35,7 +37,22 @@ function* logoutUserRequest({ payload }) {
   } catch (err) {}
 }
 
+function* recoverPasswordRequest({ payload }) {
+  try {
+    console.log("Start recover Password");
+    yield call([AuthApiService, AuthApiService.recoverPassword], {
+      email: payload
+    });
+    yield put(recoverPasswordSuccess());
+  } catch (err) {
+    console.log("err in RECover - ", err.message);
+    yield put(recoverPasswordFailed());
+    alert("User not exist in DB!");
+  }
+}
+
 export function* authWatcher() {
   yield takeEvery(`${types.SET_TOKEN}_REQUEST`, setTokenRequest);
   yield takeEvery(`${types.USER_LOGOUT}_REQUEST`, logoutUserRequest);
+  yield takeEvery(`${types.RECOVER_PASSWORD}_REQUEST`, recoverPasswordRequest);
 }

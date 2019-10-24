@@ -22,7 +22,13 @@ const postLimiter = new RateLimit({
 });
 
 router.post("/login", (...args) => new userController().authenticate(...args));
-router.post("/register", (...args) => new userController().createUser(...args));
+// router.post("/register", (...args) => new userController().createUser(...args));
+router.post("/reset-password/user/:email", (...args) =>
+  new userController().sendPasswordResetEmail(...args)
+);
+router.post("/reset-password/receive-new-password/:userId/:token", (...args) =>
+  new userController().receiveNewPassword(...args)
+);
 
 // READ (ONE)
 // router.get("/:id", (req, res) => {
