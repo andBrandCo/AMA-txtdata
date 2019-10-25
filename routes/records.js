@@ -9,5 +9,8 @@ router.get("/download/csv", (...args) =>
 router.get("/send-to-server/csv", (...args) =>
   new RecordController().sendToServerAllRecordCSV(...args)
 );
+router.get("/send-to-server/last-records", (...args) =>
+  new RecordController().sendToServerLastRecordsCSV(...args)
+);
 
 module.exports = router;

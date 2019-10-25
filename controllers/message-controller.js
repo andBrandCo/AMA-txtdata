@@ -11,15 +11,12 @@ class MessageController {
   }
 
   async findMessagesByKeyword(req, res) {
-    let { keyword, mobileNumber } = req.body;
+    //for local usage
+    // let { keyword, mobileNumber } = req.body;
 
     const { Body, From } = req.body;
 
     // keyword = keyword.toUpperCase();
-    // console.log("req.headers in keyword req - ", req.headers);
-    //console.log("req.headers in keyword req - ", req);
-    //console.log("req.headers in keyword req - ", res);
-    //console.log("req.body in keyword req - ", req.body);
 
     // await messageService.findByKeyword(keyword, mobileNumber, res);
     await messageService.findByKeyword(Body, From, res);

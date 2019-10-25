@@ -29,9 +29,9 @@ class SFTPService {
       });
   }
 
-  sendAllRecordByFTP(csvData, res) {
+  sendAllRecordByFTP(csvData, res, note = "") {
     const date = new Date();
-    let remoteFile = `/AMA SMS/list-${date.toDateString()}.csv`;
+    let remoteFile = `/AMA SMS/list${note}-${date.toDateString()}.csv`;
     const readStream = new Buffer.from(csvData);
     console.log("remoteFile- ", remoteFile);
 
