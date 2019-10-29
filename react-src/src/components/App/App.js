@@ -12,6 +12,8 @@ import SignIn from "../pages/Login";
 import MainContainer from "../pages/MainContainer";
 import history from "../../services/history";
 import PrivateRoute from "../PrivateRoute";
+import RecoverPassword from "../pages/RecoverPassword";
+import UpdatePassword from "../pages/UpdatePassword";
 
 class App extends Component {
   // constructor() {
@@ -113,6 +115,20 @@ class App extends Component {
             }
           />
           <Route path="/login" component={SignIn} />
+          <Route path="/recover-password" component={RecoverPassword} />
+          <Route
+            path="/update-password/:userId/:token"
+            render={({ match }) => (
+              <UpdatePassword
+                userId={match.params.userId}
+                token={match.params.token}
+              />
+            )}
+          />
+          {/* <Route
+            path="/update-password/:userId/:token"
+            component={UpdatePassword}
+          /> */}
           <PrivateRoute path="/messages" component={MainContainer} />
         </Switch>
       </Router>

@@ -3,13 +3,15 @@ import authReducer from "./authReducer";
 import keywordReducer from "./keywordReducer";
 import messageListReducer from "./messageListReducer";
 import recordsReducer from "./recordsReducer";
+import commonReducer from "./commonReducer";
 import { types } from "../actions/authActions";
 
 const appReducer = combineReducers({
   auth: authReducer,
   keyword: keywordReducer,
   messageList: messageListReducer,
-  recordList: recordsReducer
+  recordList: recordsReducer,
+  common: commonReducer
 });
 
 const rootReducer = (state, action) => {

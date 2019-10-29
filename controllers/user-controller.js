@@ -10,12 +10,48 @@ class UserController {
       ? res.send(user)
       : res.status(400).json({ message: "Username or password is incorrect" });
   }
-  async createUser(req, res, next) {
-    try {
-      const newUser = await UserService.createUser(req.body);
-      console.log("CREATED user - ", newUser);
 
-      newUser ? res.send("Registration successful") : next(newUser);
+  // async createUser(req, res, next) {
+  //   try {
+  //     const newUser = await UserService.createUser(req.body);
+  //     console.log("CREATED user - ", newUser);
+
+  //     newUser ? res.send("Registration successful") : next(newUser);
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
+
+  async sendPasswordResetEmail(req, res, next) {
+    const {
+      params: { email }
+    } = req;
+    try {
+      const info = await UserService.sendPasswordResetEmail({ email });
+      console.log("info - ", info);
+      res.status(200).send("Message sent successfully");
+    } catch (err) {
+      err.message = "User not exist!";
+      res.status(404).send("User not exist in DB!");
+      // next(err);
+    }
+  }
+
+  async receiveNewPassword(req, res, next) {
+    const {
+      body: { password },
+      params: { userId, token }
+    } = req;
+    console.log("new PASSWORD!!!!");
+
+    try {
+      const result = await UserService.receiveNewPassword({
+        userId,
+        token,
+        password
+      });
+      console.log("UPDATE Password user - ", result);
+      res.send("Changed password successful");
     } catch (err) {
       next(err);
     }
