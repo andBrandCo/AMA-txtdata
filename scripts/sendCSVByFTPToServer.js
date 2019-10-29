@@ -83,11 +83,11 @@ const sendDataToRemoteServerByFTP = async () => {
       .sort({ createdAt: "desc" })
       .lean()
       .exec();
-      console.log(recordList);
+      //console.log(recordList);
     const csvData = convertToCSV(recordList);
-    console.log(csvData);
+    //console.log(recordList);
     const note = ` for ${days} day(s) by script`;
-    const date = new Date.UTC();
+    const date = new Date();
     let remoteFile = `/AMA SMS/list${note}-${date.toDateString()}.csv`;
     const readStream = new Buffer.from(csvData);
     console.log("remoteFile- ", remoteFile);
