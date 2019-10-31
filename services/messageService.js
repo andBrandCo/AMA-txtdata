@@ -1,14 +1,15 @@
 const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
 const Message = require("../models/message");
+const TextlineService = require("../services/textlineService");
 const { bitlyRequest } = require("../tools/bitly");
 const { mutableURLTemplate } = require("../models/const");
-// const { testSendRequestToTwilio } = require("../tools/twilio_send_sms");
 const recordService = require("./recordService");
-const phoneNumberService = require("./phoneNumberService");
+// const phoneNumberService = require("./phoneNumberService");
 
 const RecordService = new recordService();
-const PhoneNumberService = new phoneNumberService();
+// const PhoneNumberService = new phoneNumberService();
+const textlineService = new TextlineService();
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
@@ -16,11 +17,24 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
   keyword = keyword.replace(/\s+/g, "");
 
   const row = await Message.findOne({ keyword });
-  const phoneData = await PhoneNumberService.findPhoneOrCreate({
-    mobileNumber
-  });
+  let { data } = await textlineService.getCustomerByPhoneNumber(mobileNumber);
+  // const phoneData = await PhoneNumberService.findPhoneOrCreate({
+  //   mobileNumber
+  // });
 
-  console.log("PHHHHHOOOONE data come back - ", phoneData);
+  // console.log("PHHHHHOOOONE data come back - ", phoneData);
+  console.log("textline response data- ", data);
+  if (data.customer === null) {
+    const body = {
+      customer: {
+        phone_number: mobileNumber
+        // "email": "chuck@mycompany.com",
+        // "name": "Chuck Finley",
+      }
+    };
+    const newCustomer = await textlineService.createCustomer(body);
+    data = newCustomer.data;
+  }
 
   console.log("row in service - ", row);
   if (row) {
@@ -28,8 +42,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const rowAddedData = await RecordService.addRow({
         mobileNumber,
         keyword,
-        uid: "",
-        phoneID: "",
+        uid: data.customer.uuid,
+        // phoneID: "",
         autoResponse: "",
         urlSent: ""
       });
@@ -44,33 +58,51 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
       RecordService.updateRow(rowAddedData._id, {
         mobileNumber,
-        phoneID: phoneData._id,
+        // phoneID: phoneData._id,
         autoResponse,
         urlSent: wholeURL,
         keyword
       });
+      const body = {
+        phone_number: data.customer.phone_number,
+        group_uuid: "<1st Department UUID>",
+        comment: {
+          body: autoResponse
+        }
+      };
+      const messageResponse = await textlineService.sendMessageToPhoneNumber(
+        body
+      );
+      console.log("Message res data from Textline - ", messageResponse.data);
 
-      const twiml = new MessagingResponse();
-      twiml.message(autoResponse);
-      res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(twiml.toString());
-      // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
+      // const twiml = new MessagingResponse();
+      // twiml.message(autoResponse);
+      // res.writeHead(200, { "Content-Type": "text/xml" });
+      // res.end(twiml.toString());
     } else {
       const autoResponseNolink = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
 
       console.log("autoNoLinkRESp - ", autoResponseNolink);
       RecordService.addRow({
         mobileNumber,
-        phoneID: phoneData._id,
+        uid: data.customer.uuid,
+        // phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
         urlSent: "",
         keyword
       });
-      const twiml = new MessagingResponse();
-      twiml.message(autoResponseNolink);
-      res.writeHead(200, { "Content-Type": "text/xml" });
-      res.end(twiml.toString());
-      // testSendRequestToTwilio(phoneData.mobileNumber, autoResponse);
+
+      const messageResponse = await textlineService.sendMessageToPhoneNumber(
+        body
+      );
+      console.log(
+        "Res data from Textline withOut URL - ",
+        messageResponse.data
+      );
+      // const twiml = new MessagingResponse();
+      // twiml.message(autoResponseNolink);
+      // res.writeHead(200, { "Content-Type": "text/xml" });
+      // res.end(twiml.toString());
     }
   } else {
     const twiml = new MessagingResponse();
@@ -80,7 +112,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     RecordService.addRow({
       keyword,
       mobileNumber,
-      phoneID: phoneData._id
+      uid: data.customer.uuid
+      // phoneID: phoneData._id
     });
     twiml.message(autoResponse);
     res.writeHead(200, { "Content-Type": "text/xml" });

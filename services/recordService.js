@@ -6,7 +6,8 @@ class RecordService {
 
     const request = new allRequest(data);
     console.log("new request - ", request);
-    request.uid = request._id;
+    // request.uid = request._id;
+    request.uid = data.uid;
     await request.save();
     // console.log(request);
     return request;
@@ -14,7 +15,8 @@ class RecordService {
   async updateRow(id, data) {
     console.log("REQ service update row DATA - ", data);
 
-    var q = allRequest.where({ uid: id });
+    // var q = allRequest.where({ uid: id });
+    var q = allRequest.where({ _id: id });
 
     q.updateOne({ $set: data }).exec();
   }
