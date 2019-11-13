@@ -125,10 +125,6 @@ class App extends Component {
               />
             )}
           />
-          {/* <Route
-            path="/update-password/:userId/:token"
-            component={UpdatePassword}
-          /> */}
           <PrivateRoute path="/messages" component={MainContainer} />
         </Switch>
       </Router>

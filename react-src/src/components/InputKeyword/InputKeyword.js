@@ -41,7 +41,7 @@ class InputKeyword extends Component {
     const { message, mobileNumber } = this.state;
     return (
       <Fragment>
-        <Typography style={{ marginLeft: "30%" }}>
+        <Typography style={{ margin: "30px 50px 0 30%" }}>
           These are the fields for testing message sending.
         </Typography>
         <TextField

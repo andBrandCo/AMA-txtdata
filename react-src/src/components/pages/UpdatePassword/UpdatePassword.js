@@ -54,6 +54,7 @@ const UpdatePassword = ({ userId, token }) => {
                 type="password"
                 name="password"
                 autoComplete="password"
+                className={classes.input}
                 autoFocus
                 onChange={event => setPassword(event.target.value)}
               />
@@ -64,6 +65,7 @@ const UpdatePassword = ({ userId, token }) => {
                 margin="normal"
                 required
                 fullWidth
+                className={classes.input}
                 type="password"
                 id="confirmPassword"
                 label="confirm Password"

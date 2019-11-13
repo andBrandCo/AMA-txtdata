@@ -1,6 +1,6 @@
-export const styles = () => ({
+export const styles = theme => ({
   button: {
-    backgroundColor: "#3e1c68"
+    ...theme.tableButton
   },
   // tableCell: {
   //   width: "200px"

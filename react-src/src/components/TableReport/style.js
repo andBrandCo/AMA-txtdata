@@ -12,6 +12,6 @@ export const useStyles = makeStyles(theme => ({
   },
   margin: {
     margin: theme.spacing(1),
-    backgroundColor: "#3e1c68"
+    ...theme.tableButton
   }
 }));

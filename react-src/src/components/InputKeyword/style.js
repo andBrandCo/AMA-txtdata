@@ -1,4 +1,4 @@
-export const styles = () => ({
+export const styles = theme => ({
   textField: {
     margin: "0 0 0 20%",
     width: 400
@@ -9,6 +9,7 @@ export const styles = () => ({
   },
   button: {
     margin: "1rem",
-    backgroundColor: "#3e1c68"
+    fontWeight: "700",
+    ...theme.submitButton
   }
 });
