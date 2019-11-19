@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const socket = require("socket.io");
 // const jwt = require("./auth/jwt");
-const config = require("./config/db");
+// const config = require("./config/db");
 const morgan = require("morgan");
 require("dotenv").config();
 require("./services/wakeUpService");
@@ -16,7 +16,7 @@ const { authMiddleware } = require("./middleware/authMiddleware");
 mongoose.Promise = global.Promise;
 
 // Connect to the database
-mongoose.connect(config.db, {
+mongoose.connect(process.env.MONGO_DB_URL, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
