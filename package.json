@@ -8,7 +8,8 @@
     "dev": "CORS=1 nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "cd react-src && npm install && npm run build",
-    "ftp-send": "node ./scripts/sendCSVByFTPToServer.js"
+    "ftp-send": "node ./scripts/sendCSVByFTPToServer.js",
+    "heroku-postbuild-dev": "cd react-src && npm install && npm run build"
   },
   "repository": {
     "type": "git",
