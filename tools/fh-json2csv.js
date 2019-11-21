@@ -1,18 +1,33 @@
 const Json2csvParser = require("json2csv").Parser;
+// const { utcToZonedTime, format } = require("date-fns-tz");
+const { getLocalTZFormattedDate } = require("./formattedDate");
 
 exports.convertToCSV = data => {
-  const jsonList = JSON.parse(JSON.stringify(data));
-  //   console.log("jsonList - ", jsonList);
+  let jsonList = JSON.parse(JSON.stringify(data));
+  jsonList.map(elem => {
+    const date = getLocalTZFormattedDate(elem.createdAt);
+    elem.createdAt = date;
+    return elem;
+  });
 
-  const csvFields = [
-    "id",
+  const fields = [
     "mobileNumber",
     "phoneID",
-    "autoResponse",
+    {
+      label: "auto response",
+      value: "autoResponse",
+      default: ""
+    },
     "urlSent",
     "keyword",
-    "createdAt"
+    {
+      label: "created at",
+      value: "createdAt",
+      default: ""
+    }
   ];
-  const json2csvParser = new Json2csvParser({ csvFields });
-  return json2csvParser.parse(jsonList);
+
+  const json2csvParser = new Json2csvParser({ fields, delimiter: "\t" });
+  const tsv = json2csvParser.parse(jsonList);
+  return tsv;
 };

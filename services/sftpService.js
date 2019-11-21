@@ -4,6 +4,8 @@ let client = new Client();
 const FTPClient = require("ftp");
 var fs = require("fs");
 
+const { getFormattedDate } = require("../tools/formattedDate");
+
 class SFTPService {
   sendAllRecord(csvData, res) {
     let remoteFile = process.env.REMOTE_PC_PASS_TO_SAVE_REPORT;
@@ -30,11 +32,9 @@ class SFTPService {
   }
 
   sendAllRecordByFTP(csvData, res, note = "") {
-    const date = new Date();
-    let remoteFile = `/AMA SMS/list${note}-${date.toDateString()}.csv`;
+    const date = getFormattedDate(new Date());
+    let remoteFile = `/AMA SMS/list${note}-${date}.tsv`;
     const readStream = new Buffer.from(csvData);
-    console.log("remoteFile- ", remoteFile);
-
     const c = new FTPClient();
     c.on("ready", function() {
       c.put(readStream, remoteFile, function(err) {

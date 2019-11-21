@@ -2,14 +2,14 @@ const { convertToCSV } = require("../tools/fh-json2csv");
 const FTPClient = require("ftp");
 var fs = require("fs");
 const mongoose = require("mongoose");
-const config = require("../config/db");
+const { getFormattedDate } = require("../tools/formattedDate");
 require("dotenv").config();
 // const unique = require("mongoose-unique-validator");
 // const validate = require("mongoose-validator");
 mongoose.Promise = global.Promise;
 
 // Connect to the database
-mongoose.connect(config.db, {
+mongoose.connect(process.env.MONGO_DB_URL, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
@@ -74,31 +74,34 @@ const sendDataToRemoteServerByFTP = async () => {
     console.log("script start!");
 
     const days = 1;
+    let fromDate = new Date(new Date().getTime() - days * 24 * 60 * 60 * 1000);
+    const currentDate = getFormattedDate(new Date());
     const recordList = await allRequest
       .find({
         createdAt: {
-          $gte: new Date(new Date().getTime() - days * 24 * 60 * 60 * 1000)
+          $gte: fromDate
         }
       })
       .sort({ createdAt: "desc" })
       .lean()
       .exec();
-      //console.log(recordList);
-    const csvData = convertToCSV(recordList);
-    //console.log(recordList);
-    const note = ` for ${days} day(s) by script`;
-    const date = new Date();
-    let remoteFile = `/AMA SMS/list${note}-${date.toDateString()}.csv`;
+
+    const csvData = await convertToCSV(recordList);
+    const note = ` for ${days} day(s) -`;
+    fromDate = getFormattedDate(fromDate);
+    let remoteFile = `/AMA SMS/list${note} ${fromDate} - ${currentDate} by script.tsv`;
     const readStream = new Buffer.from(csvData);
-    console.log("remoteFile- ", remoteFile);
 
     const c = new FTPClient();
     c.on("ready", function() {
       c.put(readStream, remoteFile, function(err) {
         if (err) {
+          console.log("_______ ", err);
+
           throw err;
         }
         c.end();
+        console.log("Script End!");
       });
     });
 
@@ -108,7 +111,7 @@ const sendDataToRemoteServerByFTP = async () => {
       user: process.env.REMOTE_PC_SERVER_NAME,
       password: process.env.REMOTE_PC_PASSWORD
     });
-    console.log("script done!");
+    console.log("FTP fn start in script!");
   } catch (e) {
     console.log("error", e);
   }
