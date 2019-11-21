@@ -18,8 +18,8 @@ class RecordController {
     const csvData = convertToCSV(recordList);
 
     // -> Send CSV File to Client
-    res.setHeader("Content-disposition", "attachment; filename=records.csv");
-    res.set("Content-Type", "text/csv");
+    res.setHeader("Content-disposition", "attachment; filename=records.tsv");
+    res.set("Content-Type", "text/tab-separated-values");
     res.status(200).end(csvData);
   }
 

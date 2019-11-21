@@ -6,5 +6,5 @@ export const getFormattedDate = date => {
     .toString()
     .padStart(2, "0");
 
-  return month + "/" + day + "/" + year;
+  return day + "/" + month + "/" + year;
 };
