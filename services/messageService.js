@@ -66,6 +66,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const body = {
         phone_number: data.customer.phone_number,
         group_uuid: "7ca06e6e-44ad-4438-9074-05e6fc125544",
+        comment: {},
         whisper: {
           body: keyword
         },
@@ -80,6 +81,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         comment: {
           body: autoResponse
         },
+        whisper: {},
       };
       const messageResponse = await textlineService.sendMessageToPhoneNumber(
         body
