@@ -1,5 +1,5 @@
 var https = require('https');
 setInterval(function() {
-    https.get("https://ama-txt.herokuapp.com/");
+    https.get(process.env.REACT_APP_API_URL);
     
 }, 300000); // every 5 minutes (300000)
