@@ -9,7 +9,9 @@ const recordService = require("./recordService");
 
 const RecordService = new recordService();
 // const PhoneNumberService = new phoneNumberService();
+TEXTLINE_GUID = process.env.TEXTLINE_GROUP_UID;
 const textlineService = new TextlineService();
+
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
@@ -65,7 +67,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       });
       const body = {
         phone_number: data.customer.phone_number,
-        group_uuid: "7ca06e6e-44ad-4438-9074-05e6fc125544",
+        group_uuid: TEXTLINE_GUID,
         comment: {},
         whisper: {
           body: keyword
@@ -77,7 +79,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       
       const body = {
         phone_number: data.customer.phone_number,
-        group_uuid: "7ca06e6e-44ad-4438-9074-05e6fc125544",
+        group_uuid: TEXTLINE_GUID,
         comment: {
           body: autoResponse
         },
