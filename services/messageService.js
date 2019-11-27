@@ -155,7 +155,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     console.log("this keyword Dosnt exist!!");
 
     RecordService.addRow({
-      prettyKeyword,
+      keyword: prettyKeyword,
       mobileNumber,
       uid: data.customer.uuid
       // phoneID: phoneData._id
