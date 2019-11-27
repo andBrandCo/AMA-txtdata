@@ -5,15 +5,23 @@ const TextlineService = require("../services/textlineService");
 const { bitlyRequest } = require("../tools/bitly");
 const { mutableURLTemplate } = require("../models/const");
 const recordService = require("./recordService");
+const twiml = new MessagingResponse();
+const emptyResponseTwilio = '';
 // const phoneNumberService = require("./phoneNumberService");
 
 const RecordService = new recordService();
 // const PhoneNumberService = new phoneNumberService();
+TEXTLINE_GUID = process.env.TEXTLINE_GROUP_UID;
 const textlineService = new TextlineService();
+
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
+//console.log(keyword);
 const findByKeyword = async (keyword, mobileNumber, res) => {
+  console.log(keyword);
+  
+  prettyKeyword = keyword;
   keyword = keyword.replace(/\s+/g, "");
 
   const row = await Message.findOne({ keyword });
@@ -35,9 +43,27 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     const newCustomer = await textlineService.createCustomer(body);
     data = newCustomer.data;
   }
+  
+  // const messageIncoming = await textlineService.sendMessageToPhoneNumber(
+  //   body
+
+  // );
+
+  console.log(prettyKeyword);
 
   console.log("row in service - ", row);
   if (row) {
+    const body = {
+      phone_number: data.customer.phone_number,
+      group_uuid: TEXTLINE_GUID,
+      comment: {
+        body: prettyKeyword
+      }
+    };
+    const  messageIncoming = await textlineService.sendIncomingMessageToPhoneNumber(
+      body
+    );
+    console.log("Message Incoming res data from Textline - ", messageIncoming.data);
     if (row.URLSent.mutableURL) {
       const rowAddedData = await RecordService.addRow({
         mobileNumber,
@@ -63,35 +89,23 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         urlSent: wholeURL,
         keyword
       });
-      const body = {
-        phone_number: data.customer.phone_number,
-        group_uuid: "7ca06e6e-44ad-4438-9074-05e6fc125544",
-        comment: {},
-        whisper: {
-          body: keyword
-        },
-      };
-      const messageResponse = await textlineService.sendMessageToPhoneNumber(
-        body
-      );
+     
       
       const body = {
         phone_number: data.customer.phone_number,
-        group_uuid: "7ca06e6e-44ad-4438-9074-05e6fc125544",
+        group_uuid: TEXTLINE_GUID,
         comment: {
           body: autoResponse
-        },
-        whisper: {},
+        }
       };
       const messageResponse = await textlineService.sendMessageToPhoneNumber(
         body
       );
-      console.log("Message res data from Textline - ", messageResponse.data);
+      //console.log("Message res data from Textline - ", messageResponse.data);
 
-      // const twiml = new MessagingResponse();
-      // twiml.message(autoResponse);
-      // res.writeHead(200, { "Content-Type": "text/xml" });
-      // res.end(twiml.toString());
+      //twiml.message(emptyResponseTwilio);
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(twiml.toString());
     } else {
       const autoResponseNolink = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
 
@@ -105,6 +119,14 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         keyword
       });
 
+      const body = {
+        phone_number: data.customer.phone_number,
+        group_uuid: TEXTLINE_GUID,
+        comment: {
+          body: autoResponseNolink
+        }
+      };
+
       const messageResponse = await textlineService.sendMessageToPhoneNumber(
         body
       );
@@ -112,26 +134,37 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         "Res data from Textline withOut URL - ",
         messageResponse.data
       );
-      // const twiml = new MessagingResponse();
-      // twiml.message(autoResponseNolink);
-      // res.writeHead(200, { "Content-Type": "text/xml" });
-      // res.end(twiml.toString());
+      
+      
+      //twiml.message(emptyResponseTwilio);
+      res.writeHead(200, { "Content-Type": "text/xml" });
+      res.end(twiml.toString());
     }
   } else {
-    const twiml = new MessagingResponse();
-    const autoResponse = "";
+    const body = {
+      phone_number: data.customer.phone_number,
+      group_uuid: TEXTLINE_GUID,
+      comment: {
+        body: prettyKeyword
+      }
+    };
+    const  messageIncoming = await textlineService.sendIncomingMessageToPhoneNumber(
+      body
+    );
+    console.log("Message Incoming res data from Textline - ", messageIncoming.data);
     console.log("this keyword Dosnt exist!!");
 
     RecordService.addRow({
-      keyword,
+      prettyKeyword,
       mobileNumber,
       uid: data.customer.uuid
       // phoneID: phoneData._id
     });
-    twiml.message(autoResponse);
+    //twiml.message(emptyResponseTwilio);
+    //console.log(res.end(twiml.toString()));
     res.writeHead(200, { "Content-Type": "text/xml" });
     res.end(twiml.toString());
-    console.log(twiml);
+    
   }
 };
 
