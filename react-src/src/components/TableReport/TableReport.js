@@ -39,7 +39,7 @@ export default function TableReport({
                 Date
               </TableCell>
               <TableCell align="center">Keyword</TableCell>
-              <TableCell align="center">Phone ID</TableCell>
+              <TableCell align="center">UUID</TableCell>
               <TableCell align="center">Mobile Number</TableCell>
               <TableCell align="center">URL Sent</TableCell>
               <TableCell align="center">Auto Response</TableCell>
@@ -49,7 +49,7 @@ export default function TableReport({
             {records.map(
               ({
                 id,
-                phoneID,
+                uid,
                 keyword,
                 mobileNumber,
                 autoResponse,
@@ -66,7 +66,7 @@ export default function TableReport({
                     <Typography component="div">{keyword}</Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <Typography component="div">{phoneID}</Typography>
+                    <Typography component="div">{uid}</Typography>
                   </TableCell>
                   <TableCell align="left">
                     <Typography component="div">{mobileNumber}</Typography>

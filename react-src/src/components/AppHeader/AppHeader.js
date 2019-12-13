@@ -1,9 +1,9 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import toolBarLogo from "../../assets/Logo.png";
 // import IconButton from "@material-ui/core/IconButton";
 // import MenuIcon from "@material-ui/icons/Menu";
 import { useStyles } from "./style";
@@ -13,8 +13,13 @@ export default function AppHeader({ logout, history }) {
   const logoutHandler = () => logout({ history });
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ backgroundColor: "#3e1c68" }}>
-        <Toolbar>
+      <AppBar position="static" className={classes.toolBar}>
+        <Toolbar
+          style={{
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
           {/* <IconButton
             edge="start"
             className={classes.menuButton}
@@ -23,16 +28,24 @@ export default function AppHeader({ logout, history }) {
           >
             <MenuIcon />
           </IconButton> */}
-          <Link to="/messages/keywords" className={classes.link}>
-            <Button color="inherit">Keywords</Button>
-          </Link>
-
-          <Typography variant="h6" className={classes.title}>
-            <Link to="/messages/report" className={classes.link}>
-              <Button color="inherit">Report</Button>
+          <div>
+            <Link to="/messages/keywords" className={classes.link}>
+              <Button color="inherit" style={{ fontWeight: "700" }}>
+                Keywords
+              </Button>
             </Link>
-          </Typography>
-          <Button color="inherit" onClick={logoutHandler}>
+            <Link to="/messages/report" className={classes.link}>
+              <Button color="inherit" style={{ fontWeight: "700" }}>
+                Report
+              </Button>
+            </Link>
+          </div>
+          <img src={toolBarLogo} alt="Logo" />
+          <Button
+            color="inherit"
+            onClick={logoutHandler}
+            style={{ fontWeight: "700" }}
+          >
             Logout
           </Button>
         </Toolbar>

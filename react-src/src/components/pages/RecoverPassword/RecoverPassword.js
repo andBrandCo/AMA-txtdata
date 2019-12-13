@@ -51,6 +51,7 @@ const RecoverPassword = ({ RecoverPassword, loading, submitted }) => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                className={classes.input}
                 autoFocus
                 onChange={event => setEmail(event.target.value)}
               />

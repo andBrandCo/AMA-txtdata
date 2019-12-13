@@ -7,7 +7,14 @@ import TableReport from "../../TableReport";
 
 const MainContainer = ({ logout, history }) => {
   return (
-    <div style={{ backgroundColor: "#E5E5E5", height: "100vh" }}>
+    <div
+      style={{
+        backgroundColor: "#E5E5E5",
+        height: "100%",
+        minHeight: "100vh",
+        paddingBottom: "70px"
+      }}
+    >
       <AppHeader logout={logout} history={history} />
       <Switch>
         <PrivateRoute path="/messages/keywords" component={KeywordsWrapper} />

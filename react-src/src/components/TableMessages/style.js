@@ -18,6 +18,6 @@ export const useStyles = makeStyles(theme => ({
     position: "absolute",
     marginLeft: "25px",
     marginTop: "-25px",
-    backgroundColor: "#3e1c68"
+    ...theme.submitButton
   }
 }));

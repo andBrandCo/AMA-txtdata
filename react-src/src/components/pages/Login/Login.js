@@ -50,6 +50,7 @@ const SignIn = ({ login, name, token, history }) => {
             id="email"
             label="Email Address"
             name="email"
+            className={classes.input}
             autoComplete="email"
             autoFocus
             onChange={event => setName(event.target.value)}
@@ -59,6 +60,7 @@ const SignIn = ({ login, name, token, history }) => {
             margin="normal"
             required
             fullWidth
+            className={classes.input}
             name="password"
             label="Password"
             type="password"

@@ -2,6 +2,7 @@ import { takeEvery, put, call } from "redux-saga/effects";
 import { types, actions } from "../actions/recordsActions";
 import { saveAs } from "file-saver";
 import RecordService from "../../services/api/RecordService";
+import { getFormattedDate } from "../../utils";
 
 function* getAllRecordRequest({ payload }) {
   try {
@@ -22,8 +23,8 @@ function* downloadRecordRequest() {
       RecordService,
       RecordService.getAllRecordCSVList
     ]);
-    const date = new Date();
-    const fileName = `AllRecords ${date.toISOString()}.csv`;
+    const date = getFormattedDate(new Date());
+    const fileName = `AllRecords ${date}.tsv`;
     const csvData = new Blob([data], { type: "text/csv;charset=utf-8;" });
     saveAs(csvData, fileName);
   } catch (err) {}
