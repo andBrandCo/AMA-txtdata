@@ -7,7 +7,7 @@ export default class APIService {
     return AuthStorage;
   }
   static get server() {
-    return process.env.REACT_APP_API_URL || "";
+    return process.env.REACT_APP_API_URL || "http://localhost:3000";
     // return ;
   }
 
