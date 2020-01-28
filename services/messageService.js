@@ -6,7 +6,7 @@ const { bitlyRequest } = require("../tools/bitly");
 const { mutableURLTemplate } = require("../models/const");
 const recordService = require("./recordService");
 //const twiml = new MessagingResponse();
-const emptyResponseTwilio = '';
+const emptyResponseTwilio = ' ';
 const phoneNumberService = require("./phoneNumberService");
 
 const RecordService = new recordService();
@@ -132,7 +132,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       //console.log("Message res data from Textline - ", messageResponse);
 
       const twiml = new MessagingResponse();
-      twiml.message(emptyResponseTwilio);
+      //twiml.message(emptyResponseTwilio);
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
     } else if(isDefaultKeyword)  {
@@ -240,7 +240,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       //   "Res data from Textline withOut URL - ",
       //   messageResponse.data
       // );
-      
+      const twiml = new MessagingResponse();
       
       //twiml.message(emptyResponseTwilio);
       res.writeHead(200, { "Content-Type": "text/xml" });
@@ -269,7 +269,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       phoneID: phoneData._id
     });
       const twiml = new MessagingResponse();
-      twiml.message(emptyResponseTwilio);
+      //twiml.message(emptyResponseTwilio);
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
     
