@@ -167,7 +167,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         }
       };
 
-      //console.log(autoResponseNolink);
+      console.log(autoResponseNolink);
       
       const twiml = new MessagingResponse();
       twiml.message(autoResponseNolink);
@@ -178,7 +178,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         phone_number: data.customer.phone_number,
         group_uuid: TEXTLINE_GUID,
         comment: {
-          body: prettyKeyword + "*",
+          body: "***" + prettyKeyword + "***",
         }
   
       };
