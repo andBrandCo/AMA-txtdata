@@ -174,7 +174,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
 
-      const bodyIncoming = {
+      const bodyIncomingDefault = {
         phone_number: data.customer.phone_number,
         group_uuid: TEXTLINE_GUID,
         comment: {
@@ -189,7 +189,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       // );
 
       messageIncoming = await textlineService.sendIncomingMessageToPhoneNumber(
-        bodyIncoming
+        bodyIncomingDefault
       );
 
       messageResponse = await textlineService.sendMessageToPhoneNumber(
