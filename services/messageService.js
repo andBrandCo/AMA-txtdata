@@ -14,22 +14,30 @@ const PhoneNumberService = new phoneNumberService();
 TEXTLINE_GUID = process.env.TEXTLINE_GROUP_UID;
 const textlineService = new TextlineService();
 let isDefaultKeyword = false;
+//let customerIsReachable;
 
 
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
 //console.log(keyword);
 const findByKeyword = async (keyword, mobileNumber, res) => {
-  console.log(keyword);
+  //console.log(keyword);
   
   prettyKeyword = keyword;
   keyword = keyword.replace(/\s+/g, "");
   const defualtKeywordTextlineOverride = ['stop','unsubscribe','cancel','start'];
   
   if(defualtKeywordTextlineOverride.find(k => k==keyword.toLowerCase())){
-    console.log('hello');
-    console.log(defualtKeywordTextlineOverride.find(k => k==keyword.toLowerCase()));
+    
+    //console.log('hello');
+    //console.log(defualtKeywordTextlineOverride.find(k => k==keyword.toLowerCase()));
     isDefaultKeyword = true;
+    // if(keyword.toLowerCase() === "start"){
+    //   customerIsReachable = true;
+    // } else {
+    //   customerIsReachable  = false;
+
+    // }
     
   }
   
@@ -53,15 +61,19 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     const newCustomer = await textlineService.createCustomer(body);
     data = newCustomer.data;
   }
-  
+
+  console.log("textline response customer data", data.customer.uuid);
+
+  //console.log(data.customer.uuid);
+
   // const messageIncoming = await textlineService.sendMessageToPhoneNumber(
   //   body
 
   // );
 
-  console.log(prettyKeyword);
+  //console.log(prettyKeyword);
 
-  console.log("row in service - ", row);
+  //console.log("row in service - ", row);
   if (row) {
     
     if (row.URLSent.mutableURL) {
@@ -73,11 +85,11 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         }
   
       };
-      console.log(row);
+      //console.log(row);
       const  messageIncoming = await textlineService.sendIncomingMessageToPhoneNumber(
         bodyIncoming
       );
-      console.log("Message Incoming res data from Textline - ", messageIncoming.data);
+      //console.log("Message Incoming res data from Textline - ", messageIncoming.data);
       const rowAddedData = await RecordService.addRow({
         mobileNumber,
         keyword,
@@ -91,9 +103,9 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         data: { link }
       } = await bitlyRequest(`${row.URLSent.mutableURL}${rowAddedData._id}`);
       const wholeURL = `${row.URLSent.mutableURL}${rowAddedData._id}`;
-      console.log("SHORT link - ", link);
+      //console.log("SHORT link - ", link);
       const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
-      console.log("autoRESp - ", autoResponse);
+      //console.log("autoRESp - ", autoResponse);
     
 
       RecordService.updateRow(rowAddedData._id, {
@@ -117,13 +129,16 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const messageResponse = await textlineService.sendMessageToPhoneNumber(
         body
       );
-      console.log("Message res data from Textline - ", messageResponse);
+      //console.log("Message res data from Textline - ", messageResponse);
 
       const twiml = new MessagingResponse();
       twiml.message(emptyResponseTwilio);
       res.writeHead(200, { "Content-Type": "text/xml" });
       res.end(twiml.toString());
     } else if(isDefaultKeyword)  {
+
+      let prettyKeywordWithAstrik = prettyKeyword + "*";
+      console.log(prettyKeywordWithAstrik);
   
     
       //console.log(row);
@@ -134,10 +149,10 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
       const autoResponseNolink = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
 
-      console.log("autoNoLinkRESp - ", autoResponseNolink);
+      //console.log("autoNoLinkRESp - ", autoResponseNolink);
       RecordService.addRow({
         mobileNumber,
-        uid: data.customer.uuid,
+        uid: row._id,
         phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
         urlSent: "",
@@ -152,7 +167,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         }
       };
 
-      console.log(autoResponseNolink);
+      //console.log(autoResponseNolink);
       
       const twiml = new MessagingResponse();
       twiml.message(autoResponseNolink);
@@ -163,10 +178,15 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         phone_number: data.customer.phone_number,
         group_uuid: TEXTLINE_GUID,
         comment: {
-          body: prettyKeyword
+          body: prettyKeyword + "*",
         }
   
       };
+
+      // updateCustomer = await textlineService.updateCustomer(
+      //   uuid,
+      //   body
+      // );
 
       messageIncoming = await textlineService.sendIncomingMessageToPhoneNumber(
         bodyIncoming
@@ -191,15 +211,15 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const  messageIncoming = await textlineService.sendIncomingMessageToPhoneNumber(
         bodyIncoming
       );
-      console.log("Message Incoming res data from Textline - ", messageIncoming.data);
+      //console.log("Message Incoming res data from Textline - ", messageIncoming.data);
       const autoResponseNolink = `${row.autoResponseBeforeURL} ${row.autoResponseAfterURL}`;
 
 
-      console.log("autoNoLinkRESp - ", autoResponseNolink);
+      //console.log("autoNoLinkRESp - ", autoResponseNolink);
       RecordService.addRow({
         mobileNumber,
-        uid: data.customer.uuid,
-        // phoneID: phoneData._id,
+        uid: row._id,
+        phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
         urlSent: "",
         keyword
@@ -216,10 +236,10 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const messageResponse = await textlineService.sendMessageToPhoneNumber(
         body
       );
-      console.log(
-        "Res data from Textline withOut URL - ",
-        messageResponse.data
-      );
+      // console.log(
+      //   "Res data from Textline withOut URL - ",
+      //   messageResponse.data
+      // );
       
       
       //twiml.message(emptyResponseTwilio);
@@ -240,12 +260,12 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       body
     );
     //console.log("Message Incoming res data from Textline - ", messageIncoming.data);
-    console.log("this keyword Dosnt exist!!");
+    //console.log("this keyword Dosnt exist!!");
 
     RecordService.addRow({
       keyword: prettyKeyword,
       mobileNumber,
-      uid: data.customer.uuid,
+      uid: row._id,
       phoneID: phoneData._id
     });
       const twiml = new MessagingResponse();
@@ -281,9 +301,9 @@ const deleteRow = ({ params: { id } }) => {
 const createRow = async ({
   body: { keyword, autoResponseBeforeURL, autoResponseAfterURL, mutableURL }
 }) => {
-  console.log("mutableData - ", mutableURL);
+  //console.log("mutableData - ", mutableURL);
   const url = mutableURL ? mutableURL : mutableURLTemplate;
-  console.log("url for save - ", url);
+  //console.log("url for save - ", url);
 
   const message = new Message({
     keyword,
