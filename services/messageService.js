@@ -76,7 +76,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
   //console.log("row in service - ", row);
   if (row) {
     
-    if (row.URLSent.mutableURL && !isDefaultKeyword ) {
+    if (row.URLSent.mutableURL) {
       const bodyIncoming = {
         phone_number: data.customer.phone_number,
         group_uuid: TEXTLINE_GUID,
