@@ -48,7 +48,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     mobileNumber
   });
 
-  // console.log("PHHHHHOOOONE data come back - ", phoneData);
+  console.log("PHHHHHOOOONE data come back - ", phoneData);
   console.log("textline response data- ", data);
   if (data.customer === null) {
     const body = {
@@ -93,7 +93,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       const rowAddedData = await RecordService.addRow({
         mobileNumber,
         keyword,
-        uid: row._id,
+        //uid: row._id,
         phoneID: phoneData._id,
         autoResponse: "",
         urlSent: ""
@@ -152,7 +152,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       //console.log("autoNoLinkRESp - ", autoResponseNolink);
       RecordService.addRow({
         mobileNumber,
-        uid: row._id,
+        //uid: row._id,
         phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
         urlSent: "",
@@ -265,7 +265,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     RecordService.addRow({
       keyword: prettyKeyword,
       mobileNumber,
-      uid: row._id,
+      //uid: row._id,
       phoneID: phoneData._id
     });
       const twiml = new MessagingResponse();

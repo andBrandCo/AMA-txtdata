@@ -6,6 +6,7 @@ class PhoneNumberService {
 
     const phone = await PhoneNumber.findOne({ mobileNumber });
     console.log("phone DATA - ", phone);
+    console.log("phone DATA - ", phone._id);
 
     if (!phone) {
       const newPhone = new PhoneNumber({ mobileNumber });
