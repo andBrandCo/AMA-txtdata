@@ -27,7 +27,7 @@ exports.convertToCSV = data => {
     }
   ];
 
-  const json2csvParser = new Json2csvParser({ fields, delimiter: "\t" });
+  const json2csvParser = new Json2csvParser({ fields, delimiter: '\t' });
   const tsv = json2csvParser.parse(jsonList);
   return tsv;
 };

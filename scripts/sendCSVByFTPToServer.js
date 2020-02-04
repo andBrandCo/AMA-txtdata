@@ -30,9 +30,6 @@ db.on("error", err => {
 // Define the database model
 const AllRequestSchema = new mongoose.Schema(
   {
-    _id: {
-      type: Object
-    },
     phoneID: {
       type: String
     },
@@ -88,30 +85,22 @@ const sendDataToRemoteServerByFTP = async () => {
       .lean()
       .exec();
 
-      console.log(recordList);
 
     const csvData = await convertToCSV(recordList);
-    console.log(csvData);
-    const note = ` for ${days} day(s)`;
-    console.log(note);
+    const note = `for ${days} day(s)`;
+   
     fromDate = getFormattedDate(fromDate);
-    console.log(note);
     //let remoteFile = `/AMA SMS/list${note} ${fromDate} - ${currentDate} by script.tsv`;
     let remoteFile = `/AMA SMS/list${note}-${fromDate}-${currentDate}.tsv`;
     const readStream = new Buffer.from(csvData);
-    console.log(readStream);
-
-    //SFTPService.sendAllRecordByFTP(csvData, res, NodeFilter);
 
     const c = new FTPClient();
     c.on("ready", function() {
       c.put(readStream, remoteFile, function(err) {
         if (err) {
-          console.log("_______ ", err);
           throw err;
         }
         c.end();
-        //return res.status(200).send("Success!");
       });
     });
 
