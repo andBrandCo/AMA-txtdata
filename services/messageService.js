@@ -25,7 +25,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
   
   prettyKeyword = keyword;
   keyword = keyword.replace(/\s+/g, "");
-  const defualtKeywordTextlineOverride = ['stop','unsubscribe','cancel','start'];
+  const defualtKeywordTextlineOverride = ['stop','unsubscribe','cancel','start','stopall'];
   
   if(defualtKeywordTextlineOverride.find(k => k==keyword.toLowerCase())){
     
