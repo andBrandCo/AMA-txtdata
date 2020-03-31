@@ -42,6 +42,7 @@ class TextlineService {
   async sendMessageToPhoneNumber(body) {
     return await axios.post(
       `https://application.textline.com/api/conversations.json`,
+      //`httpstat.us/408`,
       body,
       {
         headers: {
@@ -49,7 +50,12 @@ class TextlineService {
           "X-TGP-ACCESS-TOKEN": `${process.env.TEXTLINE_ACCESS_TOKEN}`
         }
       }
-    );
+    ).then(function (response) {
+      console.log('rere' + response);
+    })
+    .catch(function (error) {
+      //console.log(error);
+    });
   }
 }
 

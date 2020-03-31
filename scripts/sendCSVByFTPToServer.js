@@ -1,4 +1,6 @@
 const { convertToCSV } = require("../tools/fh-json2csv");
+const sftpService = require("../services/sftpService");
+const SFTPService = new sftpService();
 const FTPClient = require("ftp");
 var fs = require("fs");
 const mongoose = require("mongoose");
@@ -28,9 +30,6 @@ db.on("error", err => {
 // Define the database model
 const AllRequestSchema = new mongoose.Schema(
   {
-    uid: {
-      type: String
-    },
     phoneID: {
       type: String
     },
@@ -86,22 +85,22 @@ const sendDataToRemoteServerByFTP = async () => {
       .lean()
       .exec();
 
+
     const csvData = await convertToCSV(recordList);
-    const note = ` for ${days} day(s) -`;
+    const note = `for ${days} day(s)`;
+   
     fromDate = getFormattedDate(fromDate);
-    let remoteFile = `/AMA SMS/list${note} ${fromDate} - ${currentDate} by script.tsv`;
+    //let remoteFile = `/AMA SMS/list${note} ${fromDate} - ${currentDate} by script.tsv`;
+    let remoteFile = `/AMA SMS/list${note}-${fromDate}-${currentDate}.tsv`;
     const readStream = new Buffer.from(csvData);
 
     const c = new FTPClient();
     c.on("ready", function() {
       c.put(readStream, remoteFile, function(err) {
         if (err) {
-          console.log("_______ ", err);
-
           throw err;
         }
         c.end();
-        console.log("Script End!");
       });
     });
 
@@ -111,6 +110,7 @@ const sendDataToRemoteServerByFTP = async () => {
       user: process.env.REMOTE_PC_SERVER_NAME,
       password: process.env.REMOTE_PC_PASSWORD
     });
+
     console.log("FTP fn start in script!");
   } catch (e) {
     console.log("error", e);
