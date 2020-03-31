@@ -76,8 +76,6 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
   //console.log("row in service - ", row);
   if (row) {
-    console.log("row.isPrimaryReport");
-    console.log(row.isPrimaryReport);
     const primaryReport = typeof row.isPrimaryReport !== 'undefined'?row.isPrimaryReport:true;
     
     if (row.URLSent.mutableURL) {
