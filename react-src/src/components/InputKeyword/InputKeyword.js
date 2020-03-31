@@ -26,9 +26,11 @@ class InputKeyword extends Component {
   };
 
   handleClick = () => {
+    console.log(this.state.message)
+    console.log(this.state.mobileNumber)
     this.props.sendKeyword({
-      keyword: this.state.message,
-      mobileNumber: this.state.mobileNumber
+      Body: this.state.message,
+      From: this.state.mobileNumber
     });
     this.setState({
       message: "",

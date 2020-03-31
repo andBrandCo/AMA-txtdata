@@ -13,6 +13,7 @@ class MessageController {
   async findMessagesByKeyword(req, res) {
     //for local usage
     // let { keyword, mobileNumber } = req.body;
+    console.log(req.body)
 
     const { Body, From } = req.body;
 
@@ -55,6 +56,7 @@ class MessageController {
   }
 
   async createRow(req, res) {
+    console.log("ROW request - ", req)
     const elem = await messageService.createRow(req);
     console.log("ROW created - ", elem);
 

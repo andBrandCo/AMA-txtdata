@@ -16,12 +16,12 @@ const textlineService = new TextlineService();
 let isDefaultKeyword = false;
 //let customerIsReachable;
 
-
 const getAllMessageList = () => Message.find({});
 const getRowByID = id => Message.findById(id);
-//console.log(keyword);
+
 const findByKeyword = async (keyword, mobileNumber, res) => {
-  //console.log(keyword);
+
+
   
   prettyKeyword = keyword;
   keyword = keyword.replace(/\s+/g, "");
@@ -40,6 +40,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
     // }
     
   }
+
   
 
   const row = await Message.findOne({ keyword });
@@ -75,6 +76,9 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
   //console.log("row in service - ", row);
   if (row) {
+    console.log("row.isPrimaryReport");
+    console.log(row.isPrimaryReport);
+    const primaryReport = typeof row.isPrimaryReport !== 'undefined'?row.isPrimaryReport:true;
     
     if (row.URLSent.mutableURL) {
       const bodyIncoming = {
@@ -96,7 +100,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         //uid: row._id,
         phoneID: phoneData._id,
         autoResponse: "",
-        urlSent: ""
+        urlSent: "",
+        isPrimaryReport:primaryReport,
       });
 
       const {
@@ -113,7 +118,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         phoneID: phoneData._id,
         autoResponse,
         urlSent: wholeURL,
-        keyword
+        keyword,
+        isPrimaryReport:primaryReport,
       });
     
      
@@ -156,7 +162,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
         urlSent: "",
-        keyword
+        keyword,
+        isPrimaryReport:primaryReport,
       });
 
       const body = {
@@ -222,7 +229,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         phoneID: phoneData._id,
         autoResponse: autoResponseNolink,
         urlSent: "",
-        keyword
+        keyword,
       });
 
       const body = {
@@ -266,7 +273,7 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
       keyword: prettyKeyword,
       mobileNumber,
       //uid: row._id,
-      phoneID: phoneData._id
+      phoneID: phoneData._id,
     });
       const twiml = new MessagingResponse();
       //twiml.message(emptyResponseTwilio);
@@ -278,7 +285,8 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
 
 const updateRow = async ({
   params: { id },
-  body: { autoResponseAfterURL, autoResponseBeforeURL, mutableURL, keyword }
+  body: { autoResponseAfterURL, autoResponseBeforeURL, mutableURL, keyword, isPrimaryReport }
+
 }) => {
   return Message.findByIdAndUpdate(
     id,
@@ -288,7 +296,8 @@ const updateRow = async ({
       },
       autoResponseAfterURL,
       autoResponseBeforeURL,
-      keyword
+      keyword,
+      isPrimaryReport,
     },
     { new: true }
   );
@@ -299,7 +308,7 @@ const deleteRow = ({ params: { id } }) => {
 };
 
 const createRow = async ({
-  body: { keyword, autoResponseBeforeURL, autoResponseAfterURL, mutableURL }
+  body: { keyword, autoResponseBeforeURL, autoResponseAfterURL, mutableURL, isPrimaryReport }
 }) => {
   //console.log("mutableData - ", mutableURL);
   const url = mutableURL ? mutableURL : mutableURLTemplate;
@@ -309,6 +318,7 @@ const createRow = async ({
     keyword,
     autoResponseBeforeURL,
     autoResponseAfterURL,
+    isPrimaryReport,
     URLSent: {
       mutableURL: url
     }

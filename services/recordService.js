@@ -21,25 +21,46 @@ class RecordService {
     q.updateOne({ $set: data }).exec();
   }
 
-  async getAllRecordList(params = {}) {
+  async getAllRecordList(params = { }) {
     return await allRequest.find(params);
   }
 
-  async getRecordListForTheLastDays(numberOfDays) {
+  async getRecordListByQuery(params = { }) {
+    return await allRequest.find(params);
+  }
+
+  async getRecordListCustomReport(numberOfDays,isPrimary) {
     console.log("start service");
 
-    return await allRequest
-      .find({
+    let mongoQuery = {}
+  
+    if( isPrimary === 'true' ){
+      mongoQuery = {
         createdAt: {
           $gte: new Date(
             new Date().getTime() - numberOfDays * 24 * 60 * 60 * 1000
           )
-        }
-      })
+        }, isPrimaryReport:  {$ne: false }
+      }
+    } else {
+      mongoQuery = {
+        createdAt: {
+          $gte: new Date(
+            new Date().getTime() - numberOfDays * 24 * 60 * 60 * 1000
+          )
+        }, isPrimaryReport : { $eq : false } 
+      }
+
+
+    }
+    
+      return await allRequest
+      .find(mongoQuery)
       .sort({ createdAt: "desc" })
       .lean()
       .exec();
-  }
+   }
+    
 }
 
 module.exports = RecordService;

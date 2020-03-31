@@ -2,6 +2,7 @@ import APIService from "./APIService";
 
 export default class editDBDataService extends APIService {
   static sendKeyword(query) {
+
     return this.post("/api/messages/message", query);
   }
   static getMessageList() {

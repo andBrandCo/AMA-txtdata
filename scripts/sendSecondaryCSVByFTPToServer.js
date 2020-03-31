@@ -80,7 +80,7 @@ const sendDataToRemoteServerByFTP = async () => {
         createdAt: {
           $gte: fromDate
         },
-        isPrimaryReport : {$ne: false}
+        isPrimaryReport : {$eq: false} 
       })
       .sort({ createdAt: "desc" })
       .lean()
