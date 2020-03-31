@@ -99,16 +99,15 @@ const findByKeyword = async (keyword, mobileNumber, res) => {
         phoneID: phoneData._id,
         autoResponse: "",
         urlSent: "",
-        isPrimaryReport:primaryReport,
       });
 
       const {
         data: { link }
       } = await bitlyRequest(`${row.URLSent.mutableURL}${rowAddedData._id}`);
       const wholeURL = `${row.URLSent.mutableURL}${rowAddedData._id}`;
-      //console.log("SHORT link - ", link);
+      console.log("SHORT link - ", link);
       const autoResponse = `${row.autoResponseBeforeURL} ${link} ${row.autoResponseAfterURL}`;
-      //console.log("autoRESp - ", autoResponse);
+      console.log("autoRESp - ", autoResponse);
     
 
       RecordService.updateRow(rowAddedData._id, {
