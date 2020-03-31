@@ -47,7 +47,10 @@ const AllRequestSchema = new mongoose.Schema(
     },
     autoResponse: {
       type: String
-    }
+    },
+    isPrimaryReport : {
+      type : Boolean
+    } 
   },
   {
     timestamps: true,
@@ -79,8 +82,7 @@ const sendDataToRemoteServerByFTP = async () => {
       .find({
         createdAt: {
           $gte: fromDate
-        },
-        isPrimaryReport : {$eq: false} 
+        }, isPrimaryReport : { $eq : false } 
       })
       .sort({ createdAt: "desc" })
       .lean()
@@ -88,7 +90,7 @@ const sendDataToRemoteServerByFTP = async () => {
 
 
     const csvData = await convertToCSV(recordList);
-    const note = `for ${days} day(s)`;
+    const note = `Secondary for ${days} day(s)`;
    
     fromDate = getFormattedDate(fromDate);
     //let remoteFile = `/AMA SMS/list${note} ${fromDate} - ${currentDate} by script.tsv`;
