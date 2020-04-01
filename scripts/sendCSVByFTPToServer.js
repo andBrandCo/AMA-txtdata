@@ -89,7 +89,7 @@ const sendDataToRemoteServerByFTP = async () => {
 
 
     const csvData = await convertToCSV(recordList);
-    const note = `Primary for ${days} day(s)`;
+    const note = `for ${days} day(s)`;
    
     fromDate = getFormattedDate(fromDate);
     //let remoteFile = `/AMA SMS/list${note} ${fromDate} - ${currentDate} by script.tsv`;
