@@ -30,6 +30,9 @@ const MessageSchema = new mongoose.Schema(
     },
     autoResponseAfterURL: {
       type: String
+    },
+   isPrimaryReport: {
+      type: Boolean
     }
   },
   {

@@ -25,6 +25,9 @@ const AllRequestSchema = new mongoose.Schema(
     },
     autoResponse: {
       type: String
+    },
+    isPrimaryReport: {
+      type: Boolean
     }
   },
   {

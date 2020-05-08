@@ -30,11 +30,11 @@ function* downloadRecordRequest() {
   } catch (err) {}
 }
 
-function* sendReportRequest() {
+function* sendReportRequest({ payload }) {
   try {
     const response = yield call([
       RecordService,
-      RecordService.sendReportToServer
+      RecordService.sendReportToServer(payload)
     ]);
     console.log("REport response: ", response);
     alert("Report was sent successfully!");

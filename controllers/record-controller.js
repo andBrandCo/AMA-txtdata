@@ -24,24 +24,42 @@ class RecordController {
   }
 
   async sendToServerAllRecordCSV(req, res) {
-    const recordList = await RecordService.getAllRecordList();
+    const { query } = req;
+
+
+    let recordList = {};
+    
+
+    if (query.days &&  query.isPrimary) {
+      recordList = await RecordService.getRecordListCustomReport(
+        query.days,
+        query.isPrimary
+
+      );
+    } else {
+      recordList = await RecordService.getAllRecordList();
+    }
+   
     const csvData = convertToCSV(recordList);
     console.log("ready to send sftp req!");
     // SFTPService.sendAllRecord(csvData, res);
     SFTPService.sendAllRecordByFTP(csvData, res);
 
-    // res.send("ok");
+     //res.send("ok");
     // -> Send CSV File to Client
-    // res.setHeader("Content-disposition", "attachment; filename=records.csv");
-    // res.set("Content-Type", "text/csv");
-    // res.status(200).end(csvData);
+    //res.setHeader("Content-disposition", "attachment; filename=records.csv");
+    //res.set("Content-Type", "text/csv");
+    //res.status(200).end(csvData);
   }
 
   async sendToServerLastRecordsCSV(req, res) {
+    console.log('send to Sever');
     const { query } = req;
     if (query.days) {
-      const recordList = await RecordService.getRecordListForTheLastDays(
-        query.days
+      const recordList = await RecordService.getRecordListCustomReport(
+        query.days,
+        query.isPrimary
+
       );
       console.log("received recordList");
 

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
+import Switch from '@material-ui/core/Switch';
 import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 
@@ -15,37 +16,57 @@ class TableBodyRow extends Component {
     autoResponseBeforeURL: this.props.textBeforeURL,
     autoResponseAfterURL: this.props.textAfterURL,
     mutableURL: this.props.URL,
-    keyword: this.props.keyword
+    keyword: this.props.keyword,
+    isPrimaryReport: this.props.isPrimaryReport
   };
 
   handleChange = name => event => {
+    console.log(name)
+    console.log(event.target.value)
     this.setState({
       [name]: event.target.value
     });
+    //console.log(isPrimaryReport)
+  };
+
+  handleSwitchToggle = name => event => {
+    console.log(name)
+    console.log(event.target.checked)
+    this.setState({
+      [name]: event.target.checked
+    });
+    //console.log(isPrimaryReport)
   };
 
   handleClickSave = ev => {
+    console.log('clicked');
+    console.log(this.state.isPrimaryReport);
+  
     ev.preventDefault();
     const {
       autoResponseBeforeURL,
       autoResponseAfterURL,
       mutableURL,
-      keyword
+      keyword,
+      isPrimaryReport
     } = this.state;
+    console.log(isPrimaryReport);
 
     this.props.newRow
       ? this.props.createRow({
           keyword,
           autoResponseBeforeURL,
           autoResponseAfterURL,
-          mutableURL
+          mutableURL,
+          isPrimaryReport
         })
       : this.props.updateRow({
           id: this.props.id,
           autoResponseBeforeURL,
           autoResponseAfterURL,
           mutableURL,
-          keyword
+          keyword,
+          isPrimaryReport
         });
     this.props.onClickFn("");
   };
@@ -55,7 +76,8 @@ class TableBodyRow extends Component {
       autoResponseAfterURL,
       autoResponseBeforeURL,
       mutableURL,
-      keyword
+      keyword,
+      isPrimaryReport
     } = this.state;
     const {
       id,
@@ -75,6 +97,7 @@ class TableBodyRow extends Component {
             autoResponseAfterURL={textAfterURL}
             id={id}
             URL={mutableURL}
+            isPrimaryReport={isPrimaryReport}
           />
         ) : (
           <Fragment>
@@ -116,6 +139,16 @@ class TableBodyRow extends Component {
                 handleChange={this.handleChange("autoResponseAfterURL")}
               />
             </TableCell>
+            <TableCell align="left">
+        
+            <Switch
+            checked={isPrimaryReport}
+            color="primary"
+            onChange={this.handleSwitchToggle("isPrimaryReport")}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />
+        
+        </TableCell>
           </Fragment>
         )}
         <TableCell align="left">
