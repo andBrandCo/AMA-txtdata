@@ -1,6 +1,6 @@
 import axios from "axios";
 import AuthStorage from "../auth";
-// import qs from 'qs';
+import qs from 'qs';
 
 export default class APIService {
   static get AuthStorage() {
@@ -11,9 +11,9 @@ export default class APIService {
     // return ;
   }
 
-  // static objectToQueryString(obj) {
-  //   return qs.stringify(obj);
-  // }
+  static objectToQueryString(obj) {
+    return qs.stringify(obj);
+  }
 
   static get defaultHeaders() {
     const headers = {
@@ -66,15 +66,29 @@ export default class APIService {
     });
   }
 
-  static get(url, query) {
+  static get(url) {
     console.log("GET SERVICE has url - ", this.server);
 
+
+
     return axios.get(
-      `${this.server}${url}${
-        // query ? `?${this.objectToQueryString(query)}` : ""
-        query ? `` : ""
-      }`,
+      `${this.server}${url}`,
       {
+        headers: {
+          Authorization: `Bearer ${this.AuthStorage.getToken("token")}`
+        }
+      }
+    );
+  }
+  static getWithParams(url, query = {}) {
+
+    
+    let queryFormatted = Object.keys(query) === 0  ? "" : `?${this.objectToQueryString(query)}`
+    let urlNew = url + queryFormatted ;
+
+
+    return axios.get(
+      `${this.server}${urlNew}`,{
         headers: {
           Authorization: `Bearer ${this.AuthStorage.getToken("token")}`
         }

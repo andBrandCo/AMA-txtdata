@@ -7,7 +7,7 @@ export default class RecordService extends APIService {
   static getAllRecordCSVList() {
     return this.get("/api/records/download/csv");
   }
-  static sendReportToServer() {
-    return this.get("/api/records/send-to-server/csv");
+  static sendReportToServer(query) {
+    return this.getWithParams("/api/records/send-to-server/csv", query );
   }
 }
